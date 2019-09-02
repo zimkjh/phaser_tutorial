@@ -88,6 +88,26 @@
         this.physics.add.collider(player, platforms);
 
         cursors = this.input.keyboard.createCursorKeys();
+
+        //dynamic physics group
+        stars = this.physics.add.group({
+            key: 'star',
+            repeat: 11, // 1 child automatically, repeating 11 times. total 12 stals
+            setXY: { x: 12, y: 0, stepX: 70} // 12, 82, 152 ,,,,
+        });
+
+        stars.children.iterate(function (child){
+            // gives random bounce value
+            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+        });
+
+        this.physics.add.collider(stars, platforms);
+        //check if player and stars overlap. if true go to collectStar
+        this.physics.add.overlap(player, stars, collectStar, null, this);
+
+        function collectStar(player, star){
+            star.disableBody(true, true);
+        }
     }
 
     function update ()
