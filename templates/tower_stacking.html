@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Tower Stacking</title>
+	<script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+class Controller extends Phaser.Scene{
+	constructor(){
+		super('Controller');
+	}
+
+	preload(){
+		// image, spritesheet, audoi LOAD
+		// LOAD in this Controller scene only!
+
+		this.load.image("background_1", "static/assets/images/background_1.png");
+		this.load.image("background_2", "static/assets/images/background_2.png");
+		this.load.image("background_5", "static/assets/images/background_5.png");
+		this.load.image("background_6", "static/assets/images/background_6.png");
+		this.load.image("block", "static/assets/images/tile_long.png");
+		this.load.image("btn_go_out", "static/assets/images/btn_go_out.png");
+		this.load.image("btn_home", "static/assets/images/btn_home.png");
+		this.load.image("btn_start", "static/assets/images/btn_start.png");
+		console.log("load all images");
+	}
+
+	create(){
+		this.scene.start("Menu");
+		console.log("menu scene started");
+	}
+}
+
+class Menu extends Phaser.Scene {
+	constructor (){
+		super ('Menu');
+	}
+	create(){
+
+		const color_filter = 0x888888;
+    	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5).setTint(color_filter);
+    	this.add.text(130, 80, 'Tower Stacking', {fontSize: '40px', fill:'#000', boundsAlignW:"center"});
+
+		let btn_go_out = this.add.image(60, 60, 'btn_go_out').setScale(0.6);
+		let btn_start = this.add.image(config.width/2, config.height * 0.6, 'btn_start').setScale(1.2);
+    	
+    	btn_start.setInteractive();
+
+    	btn_start.on('pointerup', function(){
+    		game.scene.pause("Menu");
+    		game.scene.start("PlayGame");
+    	});
+	}
+}
+var blocks;
+var block;
+var blockDropStart = false;
+
+class PlayGame extends Phaser.Scene {
+	constructor(){
+		super({
+			key: "PlayGame",
+
+			physics : {
+				arcade:{
+					debug : true,
+					gravity : {y:200}
+				},
+				matter :{
+					debug : true,
+					gravity : {y:200}
+				}
+			}
+		});
+
+		this.game_score = 0;
+		this.lastTile;
+	}
+	create(){
+
+    	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5);
+    	// start block
+    	var startBlock = this.physics.add.staticGroup();
+    	startBlock.create(config.width/2, config.height-25, "block");
+
+    	// game block
+    	blocks = this.physics.add.group();
+    	this.physics.add.collider(blocks, startBlock, blockDrop, null, this);
+
+    	block = blocks.create(-10, config.height/2, 'block');
+    	block.body.allowGravity = false;
+    	block.setVelocityX(300, 0);
+
+    	this.matter.add.image(config.width/2 + 20, config.height/2+30, 'block');
+
+	}
+	update(){
+
+		this.input.on('pointerup', function(pointer){
+			if(blockDropStart === false){
+				var touchX = pointer.x;
+				console.log(touchX);
+				block.body.allowGravity = true;
+				block.setVelocity(0, 50);
+				blockDropStart = true;
+			}
+		})
+
+	}
+
+}
+
+function blockDrop(play, block){
+	if(blockDropStart === true){
+		console.log("block Dropped");
+
+		// create new block
+		block = blocks.create(-10, config.height/2, 'block');
+		block.body.allowGravity = false;
+		block.setVelocityX(300, 0);
+		blockDropStart = false;
+	}
+
+
+}
+
+
+
+class GameOver extends Phaser.Scene {
+	constructor(){
+		super('GameOver');
+	}
+}
+
+class Result extends Phaser.Scene {
+	constructor(){
+		super('Result');
+	}
+}
+
+class CharacterOption extends Phaser.Scene {
+	constructor(){
+		super('CharacterOption');
+	}
+}
+
+
+let config = {
+	type: Phaser.AUTO, //WEBGL
+	width: 540,
+	height: 960,
+	scale: {
+		// mode: Phaser.Scale.WIDTH_CONTROLS_HEIGHT,
+		// mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_BOTH,
+		parent: 'load_game_div',// div의 id값
+		width: 540,
+		height: 960
+	},
+	// backgroundColor: 0x0c88c7,
+	audio: {
+		disableWebAudio: true
+	},
+	physics: {
+		default : 'arcade'
+	},
+	scene: [Controller, Menu, PlayGame, GameOver, Result, CharacterOption]
+};
+
+let game = new Phaser.Game(config);
+
+
+</script>
+
+</body>
+</html>

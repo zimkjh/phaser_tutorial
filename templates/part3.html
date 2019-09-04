@@ -33,7 +33,9 @@
     };
 
     var game = new Phaser.Game(config);
-
+    var score = 0;
+    var scoreText;
+    
     function preload ()
     {
         this.load.image('sky', 'static/assets/sky.png');
@@ -106,8 +108,7 @@
         this.physics.add.overlap(player, stars, collectStar, null, this);
 
 
-        var score = 0;
-        var scoreText;
+
 
 
 
