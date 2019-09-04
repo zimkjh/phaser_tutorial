@@ -64,6 +64,11 @@ class Menu extends Phaser.Scene {
 var blocks;
 var block;
 var blockDropStart = false;
+var blockMoving = true;
+var collisionNum = 0;
+var score = 0;
+var scoreText;
+var cam;
 
 class PlayGame extends Phaser.Scene {
 	constructor(){
@@ -77,63 +82,87 @@ class PlayGame extends Phaser.Scene {
 				},
 				matter :{
 					debug : true,
-					gravity : {y:200}
+					gravity : {y:3}
 				}
 			}
 		});
 
-		this.game_score = 0;
-		this.lastTile;
 	}
 	create(){
 
     	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5);
     	// start block
-    	var startBlock = this.physics.add.staticGroup();
-    	startBlock.create(config.width/2, config.height-25, "block");
+    	var startBlock = this.matter.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0).setTint('0x000000');
 
     	// game block
-    	blocks = this.physics.add.group();
-    	this.physics.add.collider(blocks, startBlock, blockDrop, null, this);
+    	blocks = this.add.group();
 
-    	block = blocks.create(-10, config.height/2, 'block');
-    	block.body.allowGravity = false;
-    	block.setVelocityX(300, 0);
+    	block = this.add.existing(new Block(this, -10, config.height/2, 'block'));
 
-    	this.matter.add.image(config.width/2 + 20, config.height/2+30, 'block');
+    	blocks.add(block);
+
+    	cam = this.cameras.main;
+    	this.matter.world.on('collisionstart', function(event, bodyA, bodyB){
+    		console.log(collisionNum, score);
+    		if(collisionNum < score+1){
+    			collisionNum = collisionNum+1;
+    			blockDropStart = false;
+    		}else{
+    			collisionNum = collisionNum -1;
+    		}
+    	})
+    	scoreText = this.add.text(cam.scrollY+16,16, 'Score : 0', {fontSize: '32px', fill:'#000'});
+    	scoreText.setScrollFactor(0);
 
 	}
 	update(){
 
-		this.input.on('pointerup', function(pointer){
-			if(blockDropStart === false){
-				var touchX = pointer.x;
-				console.log(touchX);
-				block.body.allowGravity = true;
-				block.setVelocity(0, 50);
+		this.input.on('pointerdown', function(pointer){
+			if(blockDropStart === false && blockMoving === true){
 				blockDropStart = true;
+				blockMoving = false;
+				block.setIgnoreGravity(false);
+				block.setVelocityX(0);
+				block.setVelocityY(20);
 			}
 		})
+		if(blockDropStart === false && blockMoving === false){
+			// new block needed
+			blockMoving = true;
+
+			block = this.add.existing(new Block(this, -10, config.height/2, 'block'));
+			if(score > 5){
+    			cam.scrollY = cam.scrollY -57;
+			}
+			score = score+1;
+			scoreText.setText('Score: '+ score);
+
+		}else if(blockDropStart === false && blockMoving === true){
+			if(block.x >= config.width){
+				block.setVelocityX(-30);
+			}else if(block.x <= -10){
+				block.setVelocityX(30);
+			}
+		}
+
 
 	}
 
 }
 
-function blockDrop(play, block){
-	if(blockDropStart === true){
-		console.log("block Dropped");
+class Block extends Phaser.Physics.Matter.Image{
+	constructor(scene, posX, posY, key){
+		super (scene.matter.world, posX, posY, key);
 
-		// create new block
-		block = blocks.create(-10, config.height/2, 'block');
-		block.body.allowGravity = false;
-		block.setVelocityX(300, 0);
-		blockDropStart = false;
+		this.setIgnoreGravity(true);
+		this.setVelocityX(30);
+		this.setFriction(1000);
+		this.setBounce(0);
+		this.setMass(2000);
+		this.setDensity(1000);
+
 	}
-
-
 }
-
-
 
 class GameOver extends Phaser.Scene {
 	constructor(){
