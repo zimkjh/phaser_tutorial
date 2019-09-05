@@ -1,0 +1,313 @@
+@charset "utf-8";
+
+.cp_body *{margin:0;padding:0}
+.cp_body{position:relative;width:100%}
+.cp_body,.cp_body input,.cp_body textarea,.cp_body select,.cp_body button,.cp_body table{font-size:12px;font-family:돋움, Dotum, AppleGothic, Sans-serif}
+.cp_body h1,.cp_body h2,.cp_body h3,.cp_body h4,.cp_body h5,.cp_body h6{font-size:1em}
+.cp_body table,.cp_body img,.cp_body fieldset{border:0}
+.cp_body menu,.cp_body ul,.cp_body ol{list-style:none}
+.cp_body  a{text-decoration:none}
+.cp_body a:hover,.cp_body a:active,.cp_body a:focus{text-decoration:underline}
+.cp_body .blind,.cp_body legend,.cp_body hr{position:absolute;top:0;left:0;width:0;height:0;overflow:hidden;visibility:hidden;font-size:0;line-height:0}
+.cp_body .input_check,.cp_body .input_radio{width:13px;height:13px} 
+.cp_body .input_txt{*margin:-1px 0;-webkit-appearance:none;-webkit-border-radius:0}
+.cp_body em,.cp_body address{font-style:normal}
+.cp_body button:focus,.cp_body input[type=radio]:focus {outline:dotted 1px}
+.cp_body div:focus {outline:none}
+/* button style */
+.cp_body button{display:inline-block;overflow:visible;height:23px;margin:0;padding:1px 4px 0;border:1px solid #a9a9a9;border-radius:3px;background-image:-webkit-gradient(linear,0% 20%,0% 80%, from(#fff),to(#f1f1f2));background-image:-moz-linear-gradient(center top, #fff, #f1f1f2);background-image:-o-linear-gradient(top,#ffffff,#f1f1f2);background-color:#fff;color:#333;line-height:100%;letter-spacing:0;vertical-align:top;white-space:nowrap;cursor:pointer;-webkit-appearance:none;-webkit-text-size-adjust:none;filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#ffffff, endColorStr=#f1f1f2)}
+.cp_body button .tx{display:inline-block;vertical-align:top}
+.cp_body button.disable,
+.cp_body button[disabled='disabled']{color:#999;cursor:default}
+.cp_body button::-moz-focus-inner{padding:0 !important;border:0 !important}
+/* IE7 이하용 hack __ 가로여백이 1px 씩 넓어보이는 현상 해결 */
+.cp_body button{*padding:1px 3px 0}
+/* IE9 용 hack __ 폰트가 1px 올라가 보이는 현상 해결 */
+:root .cp_body button .tx{margin:1px 0 -1px 0 \0/IE9}
+/* //button style */
+
+/* 이미지 스프라이트 &cal */
+.cp_address .add_btn a em,.cp_address .address_btn .ico,.cp_address .address_btn .ico_cal,.cp_address .address_btn .arrow,.cp_list li .del em,.cp_list li .new,.add_inp_list li .del em,.cp_ch_tab li a .star,.cp_ch_top .ctop_left a .ico,.cp_ch_top .cr_btn em,.cp_ch_list li .cr_btn em,.cp_ch_list li .cr_arrow em,.cp_ch_list li .new,.cp_ch_bot .cbot_left .page a em,.cp_save_list li .del em,.cp_save_list li .imp,.cp_address_save .cp_txt .cp_tr .arrow,.cp_address_save .btn_c .ico,.cp_load_alim .quick_add .arrow{background:url(https://ssl.pstatic.net/static/pwe/address/deskhome/spr_cp_address_120618_cal.png) no-repeat}
+
+.cp_area{position:relative;z-index:1;width:100%;zoom:1}
+.cp_area .total_num{display:inline-block;position:absolute;top:-15px;right:2px;font-family:verdana;font-size:10px;font-weight:bold;line-height:14px;color:#b8b8b8}
+.cp_area .total_num em{color:#888}
+.cp_address{position:relative;z-index:2;width:auto;padding-right:82px;zoom:1}
+.cp_address .address_block{position:relative;width:100%;min-height:27px;_height:27px;margin-right:-2px;border:1px solid #bbb;background:#fff;zoom:1}
+.cp_address .address_block .input_txt{width:100%;height:21px;*margin:-1px 0;border:0 none;background:transparent;line-height:21px;color:#bbb;vertical-align:top}
+.cp_address .address_block.on{border-color:#05a3c2}
+.cp_address .address_block.on .input_txt{color:#000}
+.cp_address .add_inp{display:block;width:auto;padding:3px 30px 3px 3px;vertical-align:top}
+.cp_address .add_btn{position:absolute;right:-1px;top:-1px;height:100%;padding:1px 1px 1px 0}
+.cp_address .add_btn a{display:inline-block;width:26px;height:100%;font-size:0;line-height:0;text-align:center;vertical-align:top;border-left:1px solid #d3d3d3;background-image:-webkit-gradient(linear,0% 20%,0% 80%, from(#fff),to(#f1f1f2));background-image:-moz-linear-gradient(center top, #fff, #f1f1f2);background-image:-o-linear-gradient(top,#ffffff,#f1f1f2);background-color:#fff;-webkit-appearance:none;-webkit-text-size-adjust:none;filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#ffffff, endColorStr=#f1f1f2)}
+.cp_address .add_btn a em{display:inline-block;overflow:hidden;position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;background-position:-16px -68px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_address .add_btn a.on em{background-position:-13px top}
+.address_layer_area{position:relative;width:100%}
+.address_bor{position:absolute;left:0;top:-1px;width:100%;border:1px solid #888d95;zoom:1}
+.address_layer{overflow:auto;position:relative;width:100%;max-height:229px;_height:229px;background:#fff}
+.address_layer .cp_list li{padding-right:8px}
+.address_layer .cp_list li.dmn{background:#edf4fb}
+.address_layer .cp_list li .del{visibility:hidden}
+.address_layer .cp_list li.no_line {border-color:#edf4fb}
+.address_btn{position:absolute;right:0;top:0}
+.cp_address .address_btn button{width:75px;height:29px;letter-spacing:-1px;text-align:center}
+.cp_address .address_btn .ico{display:inline-block;overflow:hidden;width:11px;height:12px;margin:-1px 3px 0 0;background-position:left top;vertical-align:top}
+.cp_address .address_btn .arrow{display:inline-block;overflow:hidden;width:6px;height:3px;margin:4px 0 0 4px;background-position:left -14px;vertical-align:top}
+.address_foot{display:none;width:100%;padding:4px 0;border-top:1px solid #e2e2e2;background:#f8f8f8;line-height:15px}
+.address_foot:after{display:block;clear:both;content:""}
+.address_foot .af_right{display:inline;float:right;margin-right:8px;font-size:11px;letter-spacing:-1px}
+.address_foot .af_right .bar{color:#cecece}
+.address_foot .af_right a{color:#999}
+.address_foot .af_right a.check{color:#333}
+.address_layer_auto .address_layer{max-height:206px;_height:206px}
+.address_layer_auto .address_layer .cp_list li{padding-right:28px}
+.address_layer_auto .address_layer .cp_list li .del{visibility:visible}
+.address_layer_auto .address_foot{display:block}
+.cp_address .address_btn button.open{border-color:#05a3c2}
+.cp_address .address_btn .open .arrow{background-position:left -19px}
+.cp_list_bor{width:auto;margin-top:8px;border:1px solid #c3c3c3;zoom:1}
+.cp_list_area{overflow:auto;position:relative;width:100%;height:114px;}
+.cp_zoom{overflow:hidden;position:relative;zoom:1}
+.cp_list{width:100%;background:#fff; zoom:1}
+.cp_list li{position:relative;width:auto;margin-top:-1px;padding:2px 28px 2px 88px;border-top:1px solid #eaeaea;border-bottom:1px solid #eaeaea;background:#fff;/*line-height:17px; 임의*/ line-height:18px; zoom:1;vertical-align:top}
+.cp_list li .name{display:inline-block;position:absolute;top:2px;width:65px;margin-left:-88px;padding:0 15px 0 8px;vertical-align:top}
+.cp_list li .ellip_area{display:inline-block;position:relative;max-width:100%;_width:100%;vertical-align:top}
+.cp_list li .text_ellip{display:inline-block;overflow:hidden;max-width:100%;_width:100%;vertical-align:top;white-space:nowrap;text-overflow:ellipsis}
+.cp_list li .aso{display:block;width:100%;vertical-align:top}
+.cp_list li .s_t{font-weight:bold;color:#ff3e00; font-size:12px}
+.cp_list li .del{display:inline-block;position:absolute;right:6px;top:3px;padding:4px;font-size:0;line-height:0;vertical-align:top}
+.cp_list li .del em{display:inline-block;overflow:hidden;width:8px;height:7px;background-position:-8px -14px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_list li .new{display:inline-block;overflow:hidden;position:absolute;left:100%;top:3px;width:11px;height:11px;margin-left:2px;background-position:left -67px;line-height:999px;vertical-align:top}
+.cp_list li.no_line{border-top-color:#fff;border-bottom-color:#fff}
+.cp_list li.no_line .name{display:none}
+.cp_list li.no_name{padding-left:8px;padding-right:20px}
+.cp_list li.no_name .name{display:none}
+.cp_list li.over{background:#e6ebed !important}
+
+.add_inp_list{position:relative;top:-2px;left:-2px;width:100%;margin:0 -2px -2px 0}
+.add_inp_list:after{display:block;clear:both;content:""}
+.add_inp_list li{display:inline;float:left;height:18px;margin:2px 0 0 2px;padding:1px 3px 0;border:1px solid #cbe6ff;background:#e5f3ff;line-height:18px;white-space:nowrap}
+.add_inp_list li .name{display:inline-block;color:#222;vertical-align:top}
+:root .add_inp_list li .name{margin:1px 0 -1px 0 \0/IE9}/* IE9 용 hack __ 폰트가 1px 올라가 보이는 현상 해결 */
+.add_inp_list li .del{display:inline-block;padding:3px;margin:2px 0 0 1px;font-size:0;line-height:0;vertical-align:top}
+.add_inp_list li .del em{display:inline-block;overflow:hidden;width:8px;height:7px;background-position:-18px -28px;line-height:999px;vertical-align:top;cursor:pointer}
+.add_inp_list li.select{border-color:#97c7f2;background-color:#bfe0ff}
+.add_inp_list li.select .name{color:#222}
+.add_inp_list li.select .del em{background-position:-18px -36px}
+.add_inp_list li.unadd{border-color:#f8d0d0;background-color:#ffe5e5}
+.add_inp_list li.unadd .name{color:#db6868}
+.add_inp_list li.unadd .del em{background-position:-18px -44px}
+.cp_ch_abs{position:absolute;left:0;top:34px;z-index:5;width:100%}
+.cp_ch_bor{position:relative;width:auto;height:auto;padding-left:66px;border:1px solid #888d95;zoom:1}
+.cp_ch_tab{position:absolute;top:0;left:0;width:65px;height:100%;_height:353px;background:#b9bec3}
+.cp_ch_tab li{position:relative;width:100%;margin-top:-1px;vertical-align:top}
+.cp_ch_tab li a{display:block;width:100%;margin:0 -1px;padding-bottom:1px;border:1px solid #888d95;border-top-color:#868a8d;border-bottom-color:#80878e;background:#98a0a8;font-weight:bold;line-height:34px;color:#f9fafa;text-align:left}
+.cp_ch_tab li a em{display:inline-block;margin-left:10px;vertical-align:top;cursor:pointer}
+:root .cp_ch_tab li a em{margin:1px 0 -1px 10px \0/IE9}/* IE9 용 hack __ 폰트가 1px 올라가 보이는 현상 해결 */
+.cp_ch_tab li a .star{display:inline-block;overflow:hidden;width:11px;height:11px;margin:11px 0 0 3px;background-position:left -55px;line-height:999px;vertical-align:top}
+.cp_ch_tab li.ngb a{border-bottom-color:#a5aab1;background-color:#b9bec3; border-right:none}
+.cp_ch_tab li.on{z-index:10;margin-bottom:-2px;border-bottom:1px solid #939aa0}
+.cp_ch_tab li.on a{position:relative;border-color:#3f4752;background-color:#5f6a7a;color:#fff}
+.cp_ch_tab li.on a .star{background-position:-13px -55px}
+/*메뉴 상단으로 이동 */
+.top_tab .cp_ch_bor{padding-left:0}
+.top_tab .cp_ch_tab{top:-1px;left:-1px;border:1px solid #6f7275;height:37px;width:100%; z-index:50}
+.top_tab .cp_ch_tab li{float:left;width:20%;clear:right}
+.top_tab .cp_ch_tab li a{position:relative;z-index:5;margin-left:-1px;height:36px;line-height:36px;/*border:1px solid #74787e;*/text-align:center}
+.top_tab .cp_ch_tab li a em{margin:0}
+.top_tab .cp_ch_tab li.ngb a{background-color:#b9bec3}
+.top_tab .cp_ch_tab li.on{border-bottom:0 none}
+.top_tab .cp_ch_tab li.on a{position:relative;border:1px solid #3f4752;z-index:5;background:#5f6a7a}
+.top_tab .cp_ch_area{margin-top:37px}
+.top_tab .cp_ch_tab_shadow{display:none}
+.top_tab.tab4 .cp_ch_tab li {width:25% !important;}
+.cp_ch_tab_shadow{overflow:hidden;position:absolute;left:66px;top:0;z-index:2;top:0; left:0; right:0; bottom:0;_height:353px;background:#000;opacity:0.1;filter:alpha(opacity=10)}
+.cp_ch_tab_shadow.load{top:-35px}
+.cp_ch_area{position:relative;width:100%;margin-left:-1px;border-left:1px solid #6f7275;background:#fff}
+.cp_ch_top{position:relative;border-bottom:1px solid #eaeaea;background:#f8f8f8;font-size:11px;line-height:14px;text-align:center; padding:7px 68px 7px 50px}
+.cp_ch_top .ctop_c{display:inline-block;color:#333;letter-spacing:-1px;vertical-align:top;width:100%; letter-spacing /*\**/:0px;}
+.cp_ch_top.ctop_view {padding:7px 50px 7px 66px !important}
+.cp_ch_top.ctop_view > .ctop_left {display:inline-block}
+.cp_ch_top .ctop_c strong {max-width:100%; display:inline-block; overflow:hidden;white-space:nowrap;text-overflow:ellipsis; font-weight:400}
+.cp_ch_top .ctop_c em{font-weight:bold;color:#00BA2E; position:absolute;}
+.cp_ch_top .ctop_left{display:none;position:absolute;left:3px;top:3px; vertical-align:top;}
+.cp_ch_top .ctop_left a{display:inline-block;height:19px;padding:1px 6px 0;border:1px solid #ccc;border-radius:3px;background:#fcfcfc;line-height:19px;color:#555;letter-spacing:-1px;vertical-align:top;background-image:-webkit-gradient(linear,0% 20%,0% 80%, from(#fff),to(#f8f8f8));background-image:-moz-linear-gradient(center top, #fff, #f8f8f8);background-image:-o-linear-gradient(top,#ffffff,#f8f8f8);filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#ffffff, endColorStr=#f1f1f2)}
+.cp_ch_top .ctop_left a:hover{text-decoration:none}
+.cp_ch_top .ctop_left a .ico{display:inline-block;overflow:hidden;width:3px;height:5px;margin:6px 2px 0 0;background-position:-12px -47px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_ch_top .ctop_left a em{display:inline-block;vertical-align:top;cursor:pointer}
+:root .cp_ch_top .ctop_left a em{margin:1px 0 -1px 0 \0/IE9}/* IE9 용 hack __ 폰트가 1px 올라가 보이는 현상 해결 */
+.cp_ch_top .cr_btn{display:inline-block;position:absolute;right:8px;top:7px;width:12px;height:12px;border:1px solid #e8e8e8;background:#fcfcfc;font-size:0;line-height:0;vertical-align:top}
+.cp_ch_top .cr_btn em{display:inline-block;overflow:hidden;width:9px;height:8px;margin:2px 0 0 1px;background-position:-18px -14px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_ch_list_area{overflow:auto;position:relative;width:100%;height:289px}
+.cp_zoom{overflow:hidden;position:relative;zoom:1}
+.cp_ch_list{width:100%;margin-bottom:-1px}
+.cp_ch_list li{position:relative;width:auto;margin-top:-1px;padding:5px 52px 5px 88px;border-top:1px solid #eaeaea;border-bottom:1px solid #eaeaea;background:#fff;line-height:18px;zoom:1;vertical-align:top;cursor:pointer}
+.cp_ch_list li .name{display:inline-block;position:absolute;top:5px;width:65px;margin-left:-88px;padding:0 15px 0 8px;font-weight:bold;vertical-align:top}
+.cp_ch_list li .ellip_area{display:inline-block;position:relative;max-width:100%;_width:100%;vertical-align:top}
+.cp_ch_list li .text_ellip{display:inline-block;overflow:hidden;max-width:100%;_width:100%;vertical-align:top;white-space:nowrap;text-overflow:ellipsis}
+.cp_ch_list li .aso{display:block;width:100%;vertical-align:top}
+.cp_ch_list li .s_t{font-weight:bold;color:#ff3e00; font-size:12px}
+.cp_ch_list li .cr_btn{display:inline-block;position:absolute;right:8px;top:7px;width:12px;height:12px;border:1px solid #e8e8e8;background:#fcfcfc;font-size:0;line-height:0;vertical-align:top}
+.cp_ch_list li .cr_btn em{display:inline-block;overflow:hidden;width:8px;height:8px;margin:2px 0 0 2px;background-position:-18px -14px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_ch_list li .cr_arrow{display:inline-block;position:absolute;right:8px;top:7px;width:14px;height:15px;font-size:0;line-height:0;vertical-align:top}
+.cp_ch_list li .cr_arrow em{display:inline-block;overflow:hidden;width:6px;height:9px;margin:3px 0 0 4px;background-position:left -32px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_ch_list li .new{display:inline-block;overflow:hidden;position:absolute;left:100%;top:3px;width:11px;height:11px;margin-left:2px;background-position:left -67px;line-height:999px;vertical-align:top}
+.cp_ch_list li.over{background:#f2f5f6}
+.cp_ch_list li.open{}
+.cp_ch_list li.open .aso{font-weight:bold;color:#ff5a00}
+.cp_ch_list li.open .cr_btn{border-color:#7f8890;background-color:#949da5}
+.cp_ch_list li.open .cr_btn em{height:2px;margin-top:5px;background-position:-18px -24px}
+.cp_ch_list li.no_line{border-top-color:#fff;border-bottom-color:#fff}
+.cp_ch_list li.no_line .name{display:none}
+.cp_group li{padding-left:8px}
+.cp_group li a{font-weight:bold;color:#333}
+.cp_group li a em{color:#00BA2E; position:absolute; display:inline-block}
+.cp_neighbor li{padding-left:8px}
+.cp_neighbor li a{font-weight:bold;color:#333}
+.cp_neighbor li a em{color:#888888;font-weight:normal}
+.cp_ch_bot{position:relative;width:100%;border-top:1px solid #eaeaea;font-size:11px}
+.cp_ch_bot:after{display:block;clear:both;content:""}
+.cp_ch_bot .cbot_left{float:left;margin:7px 0 7px 10px; position:relative;}
+.cp_ch_bot .cbot_left .page{display:inline-block;position:relative;margin-right:-1px;vertical-align:top; float:left}
+.cp_ch_bot .cbot_left .page a{display:inline-block;width:17px;height:17px;border:1px solid #ebebeb;background:#fcfcfc;text-align:left;vertical-align:top}
+.cp_ch_bot .cbot_left .page a em{display:inline-block;overflow:hidden;width:4px;height:7px;margin-top:5px;line-height:999px;vertical-align:top}
+.cp_ch_bot .cbot_left .page a.prev{border-radius:3px 0 0 3px}
+.cp_ch_bot .cbot_left .page a.next{border-radius:0 3px 3px 0}
+.cp_ch_bot .cbot_left .page a.prev em{margin-left:6px;background-position:-7px -33px}
+.cp_ch_bot .cbot_left .page a.next em{margin-left:7px;background-position:-13px -33px}
+.cp_ch_bot .cbot_left .on{z-index:1}
+.cp_ch_bot .cbot_left .on a{border-color:#cacaca;background:#f8f8f8;background-image:-webkit-gradient(linear,0% 20%,0% 80%, from(#fff),to(#f8f8f8));background-image:-moz-linear-gradient(center top, #fff, #f8f8f8);background-image:-o-linear-gradient(top,#ffffff,#f8f8f8);filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#ffffff, endColorStr=#f1f1f2)}
+.cp_ch_bot .cbot_left .on a.prev em{background-position:-7px -24px}
+.cp_ch_bot .cbot_left .on a.next em{background-position:-13px -24px}
+.cp_ch_bot .cbot_left .page_num{display:inline-block;margin-left:9px;font-family:verdana;font-size:10px;line-height:19px;color:#999;vertical-align:top; position:absolute;left:36px}
+.cp_ch_bot .cbot_left .page_num em{font-weight:bold;color:#00BA2E}
+.cp_ch_bot .cbot_right{display:inline;float:right;margin:6px 5px 6px 0;letter-spacing:-1px}
+.cp_ch_bot .cbot_right .num_p{display:inline-block;padding:1px 0 0;line-height:21px;color:#555;vertical-align:top}
+:root .cp_ch_bot .cbot_right .num_p{margin:1px 0 -1px 0 \0/IE9}/* IE9 용 hack __ 폰트가 1px 올라가 보이는 현상 해결 */
+.cp_ch_bot .cbot_right .num_p em{font-weight:bold;color:#ff5a00}
+.cp_ch_bot .cbot_right .close_btn{display:inline-block;margin-left:8px;vertical-align:top}
+.cp_ch_bot .cbot_right .close_btn a{display:inline-block;height:19px;padding:1px 7px 0;border:1px solid #ccc;border-radius:3px;background:#fbfbfb;line-height:19px;color:#555;vertical-align:top;background-image:-webkit-gradient(linear,0% 20%,0% 80%, from(#fff),to(#f8f8f8));background-image:-moz-linear-gradient(center top, #fff, #f8f8f8);background-image:-o-linear-gradient(top,#ffffff,#f8f8f8);filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#ffffff, endColorStr=#f1f1f2)}
+.cp_ch_bot .cbot_right .close_btn a em{display:inline-block;vertical-align:top;cursor:pointer}
+:root .cp_ch_bot .cbot_right .close_btn a em{margin:1px 0 -1px 0 \0/IE9}/* IE9 용 hack __ 폰트가 1px 올라가 보이는 현상 해결 */
+.cp_ch_bot .cbot_right .close_btn a:hover{text-decoration:none}
+
+.wrp_option {margin-top:7px;*zoom:1}
+.wrp_option:after {content:''; display:block; clear:both; height:0; overflow:hidden;}
+.cp_address_save .cp_tit{width:100%;margin-top:10px;line-height:18px;color:#333}
+.cp_address_save .cp_tit span{font-weight:bold;color:#00BA2E}
+.cp_address_save .cp_tit em{color:#ff3e00}
+
+.cp_slt_tit {width:174px;padding:6px 0 6px 9px;*padding:7px 0 6px 9px; background:#fff; border:solid 1px #c5c5c5; position:relative; margin-right:7px; float:left;height:15px;*height:14px;}
+:root .cp_slt_tit { padding:7px 0 6px 9px;height:14px;}
+.cp_slt_tit .tit {font-size:12px; color:#000; font-weight:400; margin-right:30px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
+.cp_slt_tit.dim .tit {color:#bfbfbf}
+.cp_slt_tit .grp_view {width:29px; height:27px; border:solid 1px #bbbbbb; border-left:0; border-radius:0; position:absolute; top:-1px; right:-1px;padding:0;text-align:left; outline:none}
+.cp_slt_tit .grp_view span {background:url(https://ssl.pstatic.net/static/pwe/address/deskhome/spr_cp_address_121019.png) 0 -100px no-repeat; display:inline-block; width:18px; height:27px; text-indent:-999px;*text-indent:0px;*margin-top:0px}
+.cp_slt_tit.on .grp_view span {background-position:-25px -100px}
+.cp_slt_tit.on .ly_cp_slt {display:block !important} 
+.ly_cp_slt {position:absolute; top:27px; left:-1px; width:183px; background:#fff; border:solid 1px #888d95;z-index:10; display:none}
+.ly_cp_slt ul {max-height:70px; overflow-y:auto}
+.ly_cp_slt li {height:22px; line-height:22px;}
+.ly_cp_slt li a {color:#333; padding-left:9px;display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.ly_cp_slt li a:hover {background:#f2f5f6;text-decoration:none}
+.ly_cp_slt .grp_add {border-radius:0; background:none; border:none;border-top:solid 1px #e2e2e2;color:#333; font-size:11px; text-align:left; padding:5px 4px 4px; height:18px;display:block; overflow:visible;margin:0;line-height:18px; vertical-align:top;white-space:nowrap;cursor:pointer; vertical-align:middle;}
+.ly_cp_slt .grp_add:hover,.ly_cp_slt .grp_add:focus,.ly_cp_slt .grp_add:active{text-decoration:none}
+.ly_cp_slt .grp_add span {width:10px; height:10px; display:inline-block; background:url(https://ssl.pstatic.net/static/pwe/address/deskhome/spr_cp_address_121019.png) -13px 0 no-repeat; margin-left:4px; vertical-align:middle; margin-top:-1px;}
+
+.cp_save_bor{width:auto;margin-top:6px;border:1px solid #c5c5c5;zoom:1}
+.cp_save_bor2{width:auto;margin-top:7px;padding:3px;border:1px solid #929292;border-bottom-color:#c5c5c5;border-right-color:#c5c5c5;zoom:1}
+.cp_save_bor2 input{width:100%;height:21px;border:0;line-height:21px}
+.cp_save_bor2 input.nodata{color:#bfbfbf}
+.cp_save_bor3{margin-left:192px;*margin-left:0px;padding:3px 6px;border:1px solid #929292;border-bottom-color:#c5c5c5;border-right-color:#c5c5c5;zoom:1}
+.cp_save_bor3.focus{border:solid 1px #05a3c2;}
+.cp_save_bor3 input{width:100%;height:21px;*height:19px;border:0;line-height:21px}
+.cp_save_bor3 input.nodata{color:#bfbfbf}
+.cp_save_area{overflow:auto;position:relative;width:100%;max-height:134px;_height:134px}
+.cp_save_list{width:100%;margin-bottom:-1px}
+.cp_save_list li{position:relative;width:auto;padding-left:114px;border-bottom:1px solid #f1f1f1;line-height:18px;vertical-align:top;zoom:1}
+.cp_save_list li:after{display:block;clear:both;content:""}
+.cp_save_list li .imp{display:inline-block;position:absolute;left:5px;top:5px;width:14px;height:14px;background-position:0 -81px;text-decoration:none;font-size:0;*line-height:999px}
+.cp_save_list li .imp.on{background-position:-16px -81px;}
+.cp_save_list li .name{display:inline-block;position:absolute;top:0;width:80px;height:18px;margin-left:-114px;padding:3px 8px 3px 24px;border:1px solid #fff;background:#fff;line-height:18px;vertical-align:top}
+.cp_save_list li .name input{width:100%;height:18px;*margin:-1px 0;border:0 none;background:transparent;line-height:18px;color:#000;vertical-align:top}
+.cp_save_list li .name input::-ms-clear {display: none;}
+.cp_save_list li .name input.nodata{color:#bfbfbf}
+.cp_save_list li .ellip_area{display:inline-block;position:relative;max-width:100%;_width:100%;vertical-align:top}
+.cp_save_list li .text_ellip{display:inline-block;overflow:hidden;max-width:100%;_width:100%;vertical-align:top;white-space:nowrap;text-overflow:ellipsis}
+.cp_save_list li .text_ellip.noname {color:#bfbfbf}
+.cp_save_list li .aso{display:block;width:auto;padding:4px 8px;border-left:1px solid #c5c5c5;color:#666;vertical-align:top}
+.cp_save_list li .del{display:inline-block;position:absolute;right:5px;top:5px;padding:4px;font-size:0;line-height:0;vertical-align:top}
+.cp_save_list li .del em{display:inline-block;overflow:hidden;width:8px;height:7px;background-position:-8px -14px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_save_list li.write .name{width:60px;padding-right:28px}
+.cp_save_list li.on {z-index:1}
+.cp_save_list li.on .name{border-color:#05a3c2}
+.cp_address_save .cp_txt{width:100%;margin-top:8px;font-size:11px;line-height:14px;color:#a8a8a8;letter-spacing:-1px}
+.cp_address_save .cp_txt:after{display:block;clear:both;content:""}
+.cp_address_save .cp_txt .cp_tl{display:inline;float:left}
+.cp_address_save .cp_txt .cp_tr{display:inline;float:right}
+.cp_address_save .cp_txt .cp_tr a{display:inline-block;color:#00BA2E;vertical-align:top}
+.cp_address_save .cp_txt .cp_tr .arrow{display:inline-block;overflow:hidden;width:3px;height:5px;margin:4px 1px 0 3px;background-position:-12px -41px;line-height:999px;vertical-align:top}
+.cp_address_save .btn_c{width:100%;margin-top:18px;text-align:center}
+.cp_address_save .btn_c button{height:27px;padding-right:6px;padding-left:6px}
+.cp_address_save .btn_c button{*padding-right:5px;*padding-left:5px}/* IE7 이하용 hack __ 가로여백이 1px 씩 넓어보이는 현상 해결 */
+.cp_address_save .btn_c .ico{display:inline-block;overflow:hidden;width:11px;height:12px;margin:-1px 2px 0 0;background-position:left -42px;line-height:999px;vertical-align:top}
+.cp_address_save_layer{position:relative;z-index:1;width:auto;padding-right:34%}
+.cp_address_save_layer .address_layer{max-height:92px;_height:92px}
+.cp_save_ok{width:auto;padding:5px 8px;line-height:18px;color:#666;word-break:break-all;word-wrap:break-word}
+
+.cp_layer_pd{position:relative;width:100%;height:90px}
+.cp_dimmed{display:none;position:absolute;left:0;right:0;top:0;bottom:0;z-index:5;width:100%;height:100%;background:#fff;opacity:0.5;filter:alpha(opacity=50)}
+.cp_load_alim{width:100%;padding-top:29px;text-align:center}
+.cp_load_alim .cp_load_txt{display:block;line-height:16px;color:#333}
+.cp_load_alim .quick_add{display:block;margin-top:5px;font-size:11px;line-height:14px;letter-spacing:-1px}
+.cp_load_alim .quick_add a{display:inline-block;color:#00BA2E;vertical-align:top}
+.cp_load_alim .quick_add .arrow{display:inline-block;overflow:hidden;width:3px;height:5px;margin:4px 0 0 3px;background-position:-12px -41px;line-height:999px;vertical-align:top}
+.cp_loading_area{position:absolute;left:50%;top:50%;z-index:10;margin-top:-20px}
+.cp_loading .cp_loading_txt,.cp_loading .cp_loading_bg{background:url(https://ssl.pstatic.net/static/pwe/address/deskhome/spr_cp_loading.png) no-repeat}
+.cp_loading_area .cp_loading{display:inline-block;position:relative;width:auto;height:39px;padding:0 2px;font-size:12px;line-height:14px;color:#fff;text-align:left;vertical-align:top;white-space:nowrap}
+.cp_loading .cp_loading_txt{display:inline-block;height:26px;margin-bottom:-1px;padding:13px 16px 1px 9px;background-repeat:repeat-x;background-position:left -42px;vertical-align:top}
+.cp_loading .cp_loading_txt .ico{display:inline-block;overflow:hidden;width:17px;height:17px;margin:-2px 5px 0 0;background:url(https://ssl.pstatic.net/static/pwe/address/deskhome/spr_cp_loading_bar.gif) no-repeat left top;line-height:999px;vertical-align:top}
+.cp_loading .cp_loading_txt .txt{display:inline-block;vertical-align:top}
+.cp_loading .cp_loading_txt.grp_add {display:inline-block;height:26px;margin-bottom:-1px;padding:13px 9px 1px 9px;background-repeat:repeat-x;background-position:left -42px;vertical-align:top}
+.cp_loading .cp_loading_txt.grp_add .txt {letter-spacing:-0.02em}
+.cp_loading .cp_loading_txt.grp_add .txt strong{letter-spacing:-0.02em}
+:root .cp_loading .cp_loading_txt .txt{margin:1px 0 -1px 0 \0/IE9}/* IE9 용 hack __ 폰트가 1px 올라가 보이는 현상 해결 */
+.cp_loading .cp_loading_bg{display:inline-block;overflow:hidden;position:absolute;top:0;width:2px;height:39px;margin-bottom:-1px;padding-bottom:1px;vertical-align:top}
+.cp_loading .cp_loading_bg.bg_l{left:0;background-position:left top}
+.cp_loading .cp_loading_bg.bg_r{right:0;background-position:left -84px}
+
+/* ncs 스타일 */
+.ncs .cp_address {padding-right:2px}
+.ncs .cp_address .address_btn button {display:none}
+
+/* 임시 캘린더 .cp_body.cal */
+.cp_body.cal button{background: url("https://ssl.pstatic.net/static/calendar/2012/sp_buttonbg_120816.png") no-repeat scroll right -40px transparent;color: #666666 !important;display: inline-block;font-size: 11px;font-weight: normal;height: 20px !important;letter-spacing: -1px;line-height: 17px;padding: 2px 5px 0 0;vertical-align: top;padding: 2px 6px 0 0;border:0;width:52px !important; margin:0 !important; position:relative; font-weight:400; white-space:nowrap;-webkit-text-size-adjust:none;filter:none; border:0}
+.cp_body.cal button .tx{display:inline-block;vertical-align:top; margin-top:-1px}
+.cp_body.cal button .tx strong{font-weight:400}
+
+.cp_body.cal .cp_address{position:relative;z-index:2;width:auto;padding-right:61px;zoom:1}
+.cp_body.cal .cp_address .address_block{min-height:19px;_height:19px}
+.cp_body.cal .cp_address .address_block .input_txt{height:19px;*margin:-1px 0;line-height:19px}
+.cp_body.cal .cp_address .add_inp{padding:0px 30px 0px 3px}
+.cp_body.cal .cp_address .add_btn a{display:inline-block;width:19px;height:100%;font-size:0;line-height:0;text-align:center;vertical-align:top;border-left:1px solid #d3d3d3;background-image:-webkit-gradient(linear,0% 20%,0% 80%, from(#fff),to(#f1f1f2));background-image:-moz-linear-gradient(center top, #fff, #f1f1f2);background-image:-o-linear-gradient(top,#ffffff,#f1f1f2);background-color:#fff;-webkit-appearance:none;-webkit-text-size-adjust:none;filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#ffffff, endColorStr=#f1f1f2)}
+.cp_body.cal .cp_address .add_btn a em{display:inline-block;overflow:hidden;position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-4px 0 0 -4px;background-position:-21px -98px;line-height:999px;vertical-align:top;cursor:pointer}
+.cp_body.cal .cp_address .add_btn a.on em{background-position:-11px -98px}
+.cp_body.cal .cp_address .address_btn button{height:20px}
+.cp_body.cal .cp_address .address_btn .ico{display:inline-block;overflow:hidden;width:9px;height:10px;margin:2px 1px 0 3px;*margin:4px 1px 0 3px;background-position:0 -98px;vertical-align:top; position:relative; z-index:999}
+.cp_body.cal .cp_address .address_btn .arrow{background: url("https://ssl.pstatic.net/static/calendar/2012/sp_buttonbg_120816.png") no-repeat scroll 0 0 transparent;display: inline-block !important;height: 20px;margin: 0 0 0 !important;*margin:0 !important;vertical-align: top;width: 5px !important;; position:absolute; left:0; top:0;vertical-align: top;}
+:root .cp_body.cal .cp_address .address_btn .arrow {top:0; }
+/*.cp_body.cal .address_layer .cp_list li.over{background:#f2f5f6} 색상 비슷한 것 같음 확인필요 */
+.cp_body.cal .add_inp_list{position:relative;top:-1px;left:-2px;width:100%;margin:0}
+.cp_body.cal .add_inp_list li{display:inline;float:left;height:15px;margin:2px 0 0 2px;padding:0 3px 1px;border:1px solid #cbe6ff;background:#e5f3ff;line-height:18px;white-space:nowrap}
+
+.schedule_column2 .adress_component {z-index:10}
+.cp_body.cal .cp_ch_abs{position:absolute;left:0;top:21px;z-index:10;width:100%}
+
+/*.cp_body.cal .cp_ch_tab_shadow{overflow:hidden;position:absolute;left:66px;top:0;z-index:2;width:1px;height:100%;_height:353px;background:#000;opacity:0.1;filter:alpha(opacity=10)} 확인 필요 */
+
+.cp_body.cal .cp_save_bor{width:auto;margin-top:7px;border:1px solid #c5c5c5;zoom:1}
+.cp_body.cal .cp_save_list li .text_ellip.noname {color:#bfbfbf}
+.cp_body.cal .cp_address_save .cp_txt{margin-top:10px;}
+
+/* 캘린더 버튼 스타일 */
+.cp_body button.btn_sy_cp .lbg {background: url("https://ssl.pstatic.net/static/calendar/2012/sp_buttonbg_120816.png") no-repeat scroll 0 0 transparent;display: inline-block !important;height: 20px;margin: -2px 0 0 !important;vertical-align: top;width: 5px !important;}

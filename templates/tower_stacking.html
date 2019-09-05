@@ -31,6 +31,7 @@ class Controller extends Phaser.Scene{
 		this.load.image("btn_go_out", "static/assets/images/btn_go_out.png");
 		this.load.image("btn_home", "static/assets/images/btn_home.png");
 		this.load.image("btn_start", "static/assets/images/btn_start.png");
+		this.load.image("square", "static/assets/images/square.png");
 		console.log("load all images");
 	}
 
@@ -82,7 +83,7 @@ class PlayGame extends Phaser.Scene {
 				},
 				matter :{
 					debug : true,
-					gravity : {y:3}
+					gravity : {y:7}
 				}
 			}
 		});
@@ -93,11 +94,12 @@ class PlayGame extends Phaser.Scene {
     	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5);
     	// start block
     	var startBlock = this.matter.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0).setTint('0x000000');
+    	startBlock.scaleX = 2;
 
     	// game block
     	blocks = this.add.group();
 
-    	block = this.add.existing(new Block(this, -10, config.height/2, 'block'));
+    	block = this.add.existing(new Block(this, -10, config.height/2, 'square'));
 
     	blocks.add(block);
 
@@ -123,17 +125,18 @@ class PlayGame extends Phaser.Scene {
 				blockMoving = false;
 				block.setIgnoreGravity(false);
 				block.setVelocityX(0);
-				block.setVelocityY(20);
+				// block.setVelocityY(20);
 			}
 		})
 		if(blockDropStart === false && blockMoving === false){
 			// new block needed
 			blockMoving = true;
 
-			block = this.add.existing(new Block(this, -10, config.height/2, 'block'));
-			if(score > 5){
-    			cam.scrollY = cam.scrollY -57;
-			}
+			block = this.add.existing(new Block(this, -10, config.height/2, 'square'));
+			//camera scroll up
+			// if(score > 5){
+   //  			cam.scrollY = cam.scrollY -57;
+			// }
 			score = score+1;
 			scoreText.setText('Score: '+ score);
 
