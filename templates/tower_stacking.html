@@ -53,7 +53,7 @@ class Menu extends Phaser.Scene {
 
 		let btn_go_out = this.add.image(60, 60, 'btn_go_out').setScale(0.6);
 		let btn_start = this.add.image(config.width/2, config.height * 0.6, 'btn_start').setScale(1.2);
-    	
+
     	btn_start.setInteractive();
 
     	btn_start.on('pointerup', function(){
@@ -68,8 +68,13 @@ var blockDropStart = false;
 var blockMoving = true;
 var collisionNum = 0;
 var score = 0;
+var dropNum = 0;
 var scoreText;
+var dropText;
 var cam;
+var blockHeightLow = false;
+
+var baseBlock;
 
 class PlayGame extends Phaser.Scene {
 	constructor(){
@@ -83,7 +88,7 @@ class PlayGame extends Phaser.Scene {
 				},
 				matter :{
 					debug : true,
-					gravity : {y:7}
+					gravity : {y:1}
 				}
 			}
 		});
@@ -96,6 +101,10 @@ class PlayGame extends Phaser.Scene {
     	var startBlock = this.matter.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0).setTint('0x000000');
     	startBlock.scaleX = 2;
 
+			// base block
+			baseBlock = this.matter.add.image(config.width/2, config.height + 100 , 'block').setStatic(true).setFriction(100).setBounce(0);
+			baseBlock.scaleX = 5;
+
     	// game block
     	blocks = this.add.group();
 
@@ -105,20 +114,38 @@ class PlayGame extends Phaser.Scene {
 
     	cam = this.cameras.main;
     	this.matter.world.on('collisionstart', function(event, bodyA, bodyB){
-    		console.log(collisionNum, score);
-    		if(collisionNum < score+1){
-    			collisionNum = collisionNum+1;
-    			blockDropStart = false;
-    		}else{
-    			collisionNum = collisionNum -1;
-    		}
+				// block dropping check
+				if(block.body.id === bodyA.id || block.body.id===bodyB.id){
+					blockDropStart = false;
+				}
+				// block fall off check
+				if(bodyA.id === 2){
+					bodyB.destroy();
+					console.log("dopped");
+					dropNum = dropNum + 1;
+					dropText.setText('Drop Number : '+ dropNum);
+				}
+				if(bodyB.id === 2){
+					bodyA.destroy();
+					console.log("dopped");
+					dropNum = dropNum + 1;
+					dropText.setText('Drop Number : '+ dropNum);
+				}
+
     	})
     	scoreText = this.add.text(cam.scrollY+16,16, 'Score : 0', {fontSize: '32px', fill:'#000'});
     	scoreText.setScrollFactor(0);
+    	dropText = this.add.text(cam.scrollY+16,50, 'Drop Number : 0', {fontSize: '32px', fill:'#000'});
+    	dropText.setScrollFactor(0);
 
 	}
 	update(){
-
+		if(block.y <= config.height/2 +20){
+			blockHeightLow = true;
+		}
+		if(block.y >= config.height){
+			blockDropStart = false;
+		}
 		this.input.on('pointerdown', function(pointer){
 			if(blockDropStart === false && blockMoving === true){
 				blockDropStart = true;
@@ -138,13 +165,13 @@ class PlayGame extends Phaser.Scene {
    //  			cam.scrollY = cam.scrollY -57;
 			// }
 			score = score+1;
-			scoreText.setText('Score: '+ score);
+			scoreText.setText('Score : '+ score);
 
 		}else if(blockDropStart === false && blockMoving === true){
 			if(block.x >= config.width){
-				block.setVelocityX(-30);
+				block.setVelocityX(-20);
 			}else if(block.x <= -10){
-				block.setVelocityX(30);
+				block.setVelocityX(20);
 			}
 		}
 
@@ -158,7 +185,7 @@ class Block extends Phaser.Physics.Matter.Image{
 		super (scene.matter.world, posX, posY, key);
 
 		this.setIgnoreGravity(true);
-		this.setVelocityX(30);
+		this.setVelocityX(20);
 		this.setFriction(1000);
 		this.setBounce(0);
 		this.setMass(2000);
@@ -207,6 +234,7 @@ let config = {
 		default : 'arcade'
 	},
 	scene: [Controller, Menu, PlayGame, GameOver, Result, CharacterOption]
+
 };
 
 let game = new Phaser.Game(config);
