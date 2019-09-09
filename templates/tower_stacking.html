@@ -41,11 +41,13 @@ class Controller extends Phaser.Scene{
 	}
 }
 
+let gamePlayed = false;
 class Menu extends Phaser.Scene {
 	constructor (){
 		super ('Menu');
 	}
 	create(){
+		console.log("MENU");
 
 		const color_filter = 0x888888;
     	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5).setTint(color_filter);
@@ -57,8 +59,14 @@ class Menu extends Phaser.Scene {
     	btn_start.setInteractive();
 
     	btn_start.on('pointerup', function(){
-    		game.scene.pause("Menu");
-    		game.scene.start("PlayGame");
+				console.log("gmaeplayed : ", gamePlayed);
+    		game.scene.stop("Menu");
+				// if(gamePlayed === true){
+				// 	game.scene.resume("PlayGame");
+				// }else{
+				// 	game.scene.start("PlayGame");
+				// }
+				game.scene.start("PlayGame");
     	});
 	}
 }
@@ -95,7 +103,15 @@ class PlayGame extends Phaser.Scene {
 
 	}
 	create(){
+		blockDropStart = false;
+		blockMoving = true;
+		collisionNum = 0;
+		score = 0;
+		dropNum = 0;
+		blockHeightLow = false;
 
+		console.log("PLAYGAME");
+			gamePlayed = true;
     	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5);
     	// start block
     	var startBlock = this.matter.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0).setTint('0x000000');
@@ -103,6 +119,7 @@ class PlayGame extends Phaser.Scene {
 
 			// base block
 			baseBlock = this.matter.add.image(config.width/2, config.height + 100 , 'block').setStatic(true).setFriction(100).setBounce(0);
+			let baseBlockId = baseBlock.body.id;
 			baseBlock.scaleX = 5;
 
     	// game block
@@ -119,16 +136,20 @@ class PlayGame extends Phaser.Scene {
 					blockDropStart = false;
 				}
 				// block fall off check
-				if(bodyA.id === 2){
+				if(bodyA.id === baseBlockId){
 					bodyB.destroy();
 					console.log("dopped");
 					dropNum = dropNum + 1;
+					score = score - 1;
+					scoreText.setText('Score : '+ score);
 					dropText.setText('Drop Number : '+ dropNum);
 				}
-				if(bodyB.id === 2){
+				if(bodyB.id === baseBlockId){
 					bodyA.destroy();
 					console.log("dopped");
 					dropNum = dropNum + 1;
+					score = score - 1;
+					scoreText.setText('Score : '+ score);
 					dropText.setText('Drop Number : '+ dropNum);
 				}
 
@@ -175,6 +196,18 @@ class PlayGame extends Phaser.Scene {
 			}
 		}
 
+		if(dropNum === 5){
+			scoreText.destroy();
+			dropText.destroy();
+
+			const color_filter = 0x888888;
+	    // this.setTint(color_filter);
+
+			game.scene.start("GameOver");
+			game.scene.pause("PlayGame");
+			game.scene.bringToTop("GameOver");
+		}
+
 
 	}
 
@@ -197,6 +230,19 @@ class Block extends Phaser.Physics.Matter.Image{
 class GameOver extends Phaser.Scene {
 	constructor(){
 		super('GameOver');
+	}
+	create(){
+		console.log("GAMEOVER");
+		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0.5)');
+		let btn_go_home = this.add.image(config.width * 0.5, config.height * 0.9, 'btn_home').setScale(0.7);
+		scoreText = this.add.text(cam.scrollY+16,50, 'Score : '+score, {fontSize: '50px', fill:'#000'});
+		btn_go_home.setInteractive();
+		btn_go_home.on('pointerup', function(){
+			game.scene.start("Menu");
+			game.scene.bringToTop("Menu");
+			game.scene.stop("GameOver");
+			game.scene.stop("PlayGame");
+		});
 	}
 }
 
