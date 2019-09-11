@@ -1,0 +1,19 @@
+{
+	"generator_info": "Shape definitions generated with PhysicsEditor. Visit https://www.codeandweb.com/physicseditor",
+	"startBlock3": {
+		"type": "fromPhysicsEditor",
+		"label": "startBlock3",
+		"fixtures": [
+			{
+				"label": "",
+				"isSensor": false,
+				"vertices": [
+					[ { "x":408, "y":-0.5 }, { "x":407.5, "y":49 }, { "x":433, "y":71.5 }, { "x":433.5, "y":70 }, { "x":433.5, "y":0 }, { "x":432, "y":-0.5 } ],
+					[ { "x":21.5, "y":0 }, { "x":1, "y":-0.5 }, { "x":-0.5, "y":1 }, { "x":-0.5, "y":71 }, { "x":22, "y":49.5 } ],
+					[ { "x":22, "y":49.5 }, { "x":-0.5, "y":71 }, { "x":1, "y":71.5 }, { "x":433, "y":71.5 }, { "x":406, "y":49.5 } ],
+					[ { "x":407.5, "y":49 }, { "x":406, "y":49.5 }, { "x":433, "y":71.5 } ]
+				]
+			}
+		]
+	}
+}

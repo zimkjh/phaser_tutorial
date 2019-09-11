@@ -20,9 +20,6 @@ class Controller extends Phaser.Scene{
 	}
 
 	preload(){
-		// image, spritesheet, audoi LOAD
-		// LOAD in this Controller scene only!
-
 		this.load.image("background_1", "static/assets/images/background_1.png");
 		this.load.image("background_2", "static/assets/images/background_2.png");
 		this.load.image("background_5", "static/assets/images/background_5.png");
@@ -31,7 +28,19 @@ class Controller extends Phaser.Scene{
 		this.load.image("btn_go_out", "static/assets/images/btn_go_out.png");
 		this.load.image("btn_home", "static/assets/images/btn_home.png");
 		this.load.image("btn_start", "static/assets/images/btn_start.png");
+		this.load.image("card_character", "static/assets/images/card_character.png");
+		this.load.image("btn_character", "static/assets/images/btn_character.png");
 		this.load.image("square", "static/assets/images/square.png");
+		this.load.image("btn_extralife", "static/assets/images/btn_extralife.png");
+		this.load.image("start_block2", "static/assets/images/startBlock2.png");
+		this.load.image("start_block3", "static/assets/images/startBlock3.png");
+		this.load.atlas('sheet', "static/assets/images/startBlock2.png", "static/assets/images/startBlock2.json");
+		this.load.atlas('sheet3', "static/assets/images/startBlock3.png", "static/assets/images/startBlock3.json");
+
+		this.load.json("start_block_shape", "static/assets/images/startBlockShape.json");
+		this.load.json("start_block_shape3", "static/assets/images/startBlockShape3.json");
+
+
 		console.log("load all images");
 	}
 
@@ -41,7 +50,7 @@ class Controller extends Phaser.Scene{
 	}
 }
 
-let gamePlayed = false;
+let game_character = 'char00';
 class Menu extends Phaser.Scene {
 	constructor (){
 		super ('Menu');
@@ -55,34 +64,37 @@ class Menu extends Phaser.Scene {
 
 		let btn_go_out = this.add.image(60, 60, 'btn_go_out').setScale(0.6);
 		let btn_start = this.add.image(config.width/2, config.height * 0.6, 'btn_start').setScale(1.2);
+		let btn_character = this.add.image(config.width/2, config.height * 0.9, 'btn_character').setScale(0.7);
 
-    	btn_start.setInteractive();
+  	btn_start.setInteractive();
+		btn_character.setInteractive();
 
-    	btn_start.on('pointerup', function(){
-				console.log("gmaeplayed : ", gamePlayed);
-    		game.scene.stop("Menu");
-				// if(gamePlayed === true){
-				// 	game.scene.resume("PlayGame");
-				// }else{
-				// 	game.scene.start("PlayGame");
-				// }
-				game.scene.start("PlayGame");
-    	});
+  	btn_start.on('pointerup', function(){
+  		game.scene.stop("Menu");
+			game.scene.start("PlayGame");
+  	});
+		btn_character.on('pointerup', function(){
+			console.log("btn_cahra");
+			game.scene.pause("Menu");
+			game.scene.start("CharacterOption");
+			game.scene.bringToTop("CharacterOption");
+		});
 	}
 }
 var blocks;
 var block;
 var blockDropStart = false;
 var blockMoving = true;
-var collisionNum = 0;
 var score = 0;
-var dropNum = 0;
+var dropNum = 5;
 var scoreText;
 var dropText;
 var cam;
-var blockHeightLow = false;
+var life_left = 2;
+
 
 var baseBlock;
+var baseBlockId;
 
 class PlayGame extends Phaser.Scene {
 	constructor(){
@@ -105,21 +117,29 @@ class PlayGame extends Phaser.Scene {
 	create(){
 		blockDropStart = false;
 		blockMoving = true;
-		collisionNum = 0;
 		score = 0;
-		dropNum = 0;
-		blockHeightLow = false;
+		dropNum = 5;
+		life_left = 2;
 
 		console.log("PLAYGAME");
-			gamePlayed = true;
     	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5);
     	// start block
-    	var startBlock = this.matter.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0).setTint('0x000000');
-    	startBlock.scaleX = 2;
+			if(game_character === "char00" || game_character === 'char03'){
+	    	var startBlock = this.matter.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0);
+	    	startBlock.scaleX = 2;
+			}
+			else if(game_character =="char01"){
+				let startBlockShape = this.cache.json.get("start_block_shape");
+				var startBlock = this.matter.add.sprite(config.width/2, config.height-25, "sheet",'start_block2', {shape:startBlockShape.startBlock2}).setStatic(true).setFriction(100).setBounce(0);
+			}
+			else{
+				let startBlockShape3 = this.cache.json.get("start_block_shape3");
+				var startBlock = this.matter.add.sprite(config.width/2, config.height-25, "sheet3",'start_block3', {shape:startBlockShape3.startBlock3}).setStatic(true).setFriction(100).setBounce(0);
 
+			}
 			// base block
 			baseBlock = this.matter.add.image(config.width/2, config.height + 100 , 'block').setStatic(true).setFriction(100).setBounce(0);
-			let baseBlockId = baseBlock.body.id;
+			baseBlockId = baseBlock.body.id;
 			baseBlock.scaleX = 5;
 
     	// game block
@@ -138,32 +158,27 @@ class PlayGame extends Phaser.Scene {
 				// block fall off check
 				if(bodyA.id === baseBlockId){
 					bodyB.destroy();
-					console.log("dopped");
-					dropNum = dropNum + 1;
+					dropNum = dropNum - 1;
 					score = score - 1;
 					scoreText.setText('Score : '+ score);
-					dropText.setText('Drop Number : '+ dropNum);
+					dropText.setText('Left Drop Number : '+ dropNum);
 				}
 				if(bodyB.id === baseBlockId){
 					bodyA.destroy();
-					console.log("dopped");
-					dropNum = dropNum + 1;
+					dropNum = dropNum - 1;
 					score = score - 1;
 					scoreText.setText('Score : '+ score);
-					dropText.setText('Drop Number : '+ dropNum);
+					dropText.setText('Left Drop Number : '+ dropNum);
 				}
 
     	})
     	scoreText = this.add.text(cam.scrollY+16,16, 'Score : 0', {fontSize: '32px', fill:'#000'});
     	scoreText.setScrollFactor(0);
-    	dropText = this.add.text(cam.scrollY+16,50, 'Drop Number : 0', {fontSize: '32px', fill:'#000'});
+    	dropText = this.add.text(cam.scrollY+16,50, 'Left Drop Number : 5', {fontSize: '32px', fill:'#000'});
     	dropText.setScrollFactor(0);
 
 	}
 	update(){
-		if(block.y <= config.height/2 +20){
-			blockHeightLow = true;
-		}
 		if(block.y >= config.height){
 			blockDropStart = false;
 		}
@@ -196,16 +211,20 @@ class PlayGame extends Phaser.Scene {
 			}
 		}
 
-		if(dropNum === 5){
-			scoreText.destroy();
-			dropText.destroy();
+		if(dropNum === 0){
+			life_left = life_left - 1;
 
-			const color_filter = 0x888888;
-	    // this.setTint(color_filter);
-
-			game.scene.start("GameOver");
-			game.scene.pause("PlayGame");
-			game.scene.bringToTop("GameOver");
+			if(life_left === 0){
+				scoreText.destroy();
+				dropText.destroy();
+				game.scene.start("GameOver");
+				game.scene.pause("PlayGame");
+				game.scene.bringToTop("GameOver");
+			}else{
+				game.scene.pause("PlayGame");
+				game.scene.start("GameOver");
+				game.scene.bringToTop("GameOver");
+			}
 		}
 
 
@@ -235,7 +254,7 @@ class GameOver extends Phaser.Scene {
 		console.log("GAMEOVER");
 		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0.5)');
 		let btn_go_home = this.add.image(config.width * 0.5, config.height * 0.9, 'btn_home').setScale(0.7);
-		scoreText = this.add.text(cam.scrollY+16,50, 'Score : '+score, {fontSize: '50px', fill:'#000'});
+		let scoreText2 = this.add.text(cam.scrollY+16,50, 'Score : '+score, {fontSize: '50px', fill:'#000'});
 		btn_go_home.setInteractive();
 		btn_go_home.on('pointerup', function(){
 			game.scene.start("Menu");
@@ -243,6 +262,22 @@ class GameOver extends Phaser.Scene {
 			game.scene.stop("GameOver");
 			game.scene.stop("PlayGame");
 		});
+		if(life_left >= 1){
+			let btn_life_plus = this.add.image(config.width/2, config.height/2, 'btn_extralife').setScale(1);
+			btn_life_plus.setInteractive();
+			btn_life_plus.on("pointerup", function(){
+				game.scene.resume("PlayGame");
+				game.scene.stop("GameOver");
+				game.scene.bringToTop("PlayGame");
+
+				blockDropStart = false;
+				blockMoving = true;
+				dropNum = 5;
+				// scoreText.setActive(true);
+				dropText.setText('Left Drop Number : '+ dropNum);
+
+			})
+		}
 	}
 }
 
@@ -255,6 +290,77 @@ class Result extends Phaser.Scene {
 class CharacterOption extends Phaser.Scene {
 	constructor(){
 		super('CharacterOption');
+	}
+	create(){
+		console.log("CHARACTER OPTION");
+		let background_rect = this.add.rectangle(config.width/2, config.height/2, config.width, config.height, 0x000000, 0.3);
+		let card_character  = this.add.sprite(config.width/2, config.height/2, 'card_character').setScale(0.9);
+
+		background_rect.setInteractive();
+		background_rect.on('pointerup', function() {
+			game.scene.resume('Menu');
+			game.scene.stop('CharacterOption');
+		});
+
+		this.color_filter = 0x333333;
+
+		this.char00 = this.add.image(config.width / 2 - 100, config.height / 2 - 100 , 'block').setTint(this.color_filter);
+		this.char01 = this.add.image(config.width / 2 + 100, config.height / 2 - 100 , 'start_block2').setTint(this.color_filter);
+		this.char02 = this.add.image(config.width / 2 - 100, config.height / 2 + 100 , 'start_block3').setTint(this.color_filter);
+		this.char03 = this.add.image(config.width / 2 + 100, config.height / 2 + 100 , 'start_block2').setTint(this.color_filter);
+		this.char00.scaleX = 0.8;
+		this.char01.scaleX = 0.4;
+		this.char02.scaleX = 0.4;
+		this.char03.scaleX = 0.4;
+
+
+
+		this.char00.setInteractive();
+		this.char01.setInteractive();
+		this.char02.setInteractive();
+		this.char03.setInteractive();
+
+		this.char00.on("pointerup", function(){
+			console.log("click char00");
+			game_character = "char00";
+		});
+		this.char01.on("pointerup", function(){
+			console.log("click char01");
+			game_character = "char01";
+		});
+		this.char02.on("pointerup", function(){
+			game_character = "char02";
+		});
+		this.char03.on("pointerup", function(){
+			game_character = "char03";
+		});
+	}
+	update(){
+		switch (game_character) { // 지금 선택된 개릭터 필터제거
+			case "char01":
+				this.char00.setTint(this.color_filter);
+				this.char01.clearTint();
+				this.char02.setTint(this.color_filter);
+				this.char03.setTint(this.color_filter);
+				break;
+			case "char02":
+				this.char00.setTint(this.color_filter);
+				this.char01.setTint(this.color_filter);
+				this.char02.clearTint();
+				this.char03.setTint(this.color_filter);
+				break;
+			case "char03":
+				this.char00.setTint(this.color_filter);
+				this.char01.setTint(this.color_filter);
+				this.char02.setTint(this.color_filter);
+				this.char03.clearTint();
+				break;
+			default: //"char00"
+				this.char00.clearTint();
+				this.char01.setTint(this.color_filter);
+				this.char02.setTint(this.color_filter);
+				this.char03.setTint(this.color_filter);
+		}
 	}
 }
 

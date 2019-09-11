@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "startBlock3.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 434,
+				"h": 72
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "startBlock3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 432,
+						"h": 70
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 432,
+						"h": 70
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 432,
+						"h": 70
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b6efc9cc83a408d558e693be3fc05ada:d2a98b163f9cccdcbd478c906fb72213:8a3445dd3058370cf48a1a12ebd1a941$"
+	}
+}
