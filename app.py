@@ -30,5 +30,10 @@ def block_stacking():
 	return render_template('block_stacking.html')
 
 
+@app.route('/block_stacking_2')
+def block_stacking_2():
+	return render_template('block_stacking_o.html')
+
+
 if __name__ == '__main__':
     app.run(debug = False)
