@@ -20,10 +20,14 @@ class Controller extends Phaser.Scene{
 	}
 
 	preload(){
-		this.load.image("background_1", "static/assets/images/background_1.png");
-		this.load.image("background_2", "static/assets/images/background_2.png");
-		this.load.image("background_5", "static/assets/images/background_5.png");
-		this.load.image("background_6", "static/assets/images/background_6.png");
+		this.load.image("background_1", "static/assets/images/background1.png");
+		this.load.image("background_2", "static/assets/images/background2.png");
+		this.load.image("background_3", "static/assets/images/background3.png");
+		this.load.image("background_4", "static/assets/images/background4.png");
+		this.load.image("background_5", "static/assets/images/background5.png");
+
+		this.load.spritesheet('icon', 'static/assets/images/icon.png', { frameWidth: 152, frameHeight: 152});
+
 		this.load.image("block", "static/assets/images/tile_long.png");
 		this.load.image("btn_go_out", "static/assets/images/btn_go_out.png");
 		this.load.image("btn_home", "static/assets/images/btn_home.png");
@@ -57,7 +61,9 @@ class Menu extends Phaser.Scene {
 	}
 	create(){
 		console.log("MENU");
-
+		let sp = this.physics.add.sprite(130, 100, 'icon', 6);
+		console.log("why no sprite");
+		console.log(sp);
 		const color_filter = 0x888888;
     	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5).setTint(color_filter);
     	this.add.text(130, 80, 'Tower Stacking', {fontSize: '40px', fill:'#000', boundsAlignW:"center"});
@@ -121,11 +127,12 @@ class PlayGame extends Phaser.Scene {
 		dropNum = 5;
 		life_left = 2;
 
+		//---
 		console.log("PLAYGAME");
     	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5);
     	// start block
 			if(game_character === "char00" || game_character === 'char03'){
-	    	var startBlock = this.matter.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0);
+	    	var startBlock = this.arcade.add.image(config.width/2, config.height-25, 'block').setStatic(true).setFriction(100).setBounce(0);
 	    	startBlock.scaleX = 2;
 			}
 			else if(game_character =="char01"){

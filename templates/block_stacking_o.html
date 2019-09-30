@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Block Stacking</title>
+	<script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+class Controller extends Phaser.Scene{
+	constructor(){
+		super('Controller');
+	}
+
+	preload(){
+		this.load.image("background_1", "static/assets/images/background1.png");
+		this.load.image("background_2", "static/assets/images/background2.png");
+		this.load.image("background_3", "static/assets/images/background3.png");
+		this.load.image("background_4", "static/assets/images/background4.png");
+		this.load.image("background_5", "static/assets/images/background5.png");
+		this.load.image("ground", "static/assets/images/ground.png");
+
+		this.load.spritesheet('icon', 'static/assets/images/icon.png', { frameWidth: 152, frameHeight: 152});
+		this.load.spritesheet('icon2', 'static/assets/images/icon.png', { frameWidth: 304, frameHeight: 152});
+
+		this.load.image("block", "static/assets/images/tile_long.png");
+		this.load.image("btn_go_out", "static/assets/images/btn_go_out.png");
+		this.load.image("btn_home", "static/assets/images/btn_home.png");
+		this.load.image("btn_start", "static/assets/images/btn_start.png");
+		this.load.image("card_character", "static/assets/images/card_character.png");
+		this.load.image("btn_character", "static/assets/images/btn_character.png");
+		this.load.image("square", "static/assets/images/square.png");
+		this.load.image("btn_extralife", "static/assets/images/btn_extralife.png");
+		this.load.image("start_block2", "static/assets/images/startBlock2.png");
+		this.load.image("start_block3", "static/assets/images/startBlock3.png");
+		this.load.atlas('sheet', "static/assets/images/startBlock2.png", "static/assets/images/startBlock2.json");
+		this.load.atlas('sheet3', "static/assets/images/startBlock3.png", "static/assets/images/startBlock3.json");
+
+		this.load.json("start_block_shape", "static/assets/images/startBlockShape.json");
+		this.load.json("start_block_shape3", "static/assets/images/startBlockShape3.json");
+
+
+	}
+
+	create(){
+		this.scene.start("Menu");
+	}
+}
+
+let game_character = 'char00';
+class Menu extends Phaser.Scene {
+	constructor (){
+		super ('Menu');
+	}
+	create(){
+		console.log("MENU");
+		const color_filter = 0x888888;
+    	this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5).setTint(color_filter);
+    	this.add.text(120, 200, 'Block Stacking', {fontSize: '40px', fill:'#ffffff', boundsAlignW:"center"});
+
+		let btn_go_out = this.add.image(60, 60, 'icon', 5).setScale(0.6);
+		let btn_start = this.add.image(config.width/2, config.height * 0.6, 'icon2', 4);
+		let btn_mute = this.add.image(config.width * 0.2, config.height * 0.9, 'icon', 1).setScale(0.7);
+		let btn_sound = this.add.image(config.width * 0.2, config.height * 0.9, 'icon', 0).setScale(0.7);
+		let btn_character = this.add.image(config.width/2, config.height * 0.9, 'icon', 3).setScale(0.7);
+		let btn_trophy = this.add.image(config.width * 0.8, config.height * 0.9, 'icon', 2).setScale(0.7);
+
+    this.text_highest_score = this.add.text(config.width/2 - 120, config.height * 0.6 + 100, "내 최고 점수: " + "0" + " 점", { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
+    this.add.image(config.width/2 - 90, config.height * 0.6 + 150, 'icon', 10).setScale(0.5);//.setSize(10, 10);
+    this.add.image(config.width/2 + 20, config.height * 0.6 + 150, 'icon', 11).setScale(0.5);
+    this.text_coin_1 = this.add.text(config.width/2 - 60, config.height * 0.6 + 140, 0, { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
+    this.text_coin_2 = this.add.text(config.width/2 + 50, config.height * 0.6 + 140, 0, { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
+
+		// this.add.sprite(100, 100, 'icon', 0); // btn_sound
+		// this.add.sprite(100, 200, 'icon', 1); // btn_mute
+		// this.add.sprite(100, 300, 'icon', 2); // btn_trophy
+		// this.add.sprite(100, 400, 'icon', 3); // btn_character
+		// this.add.sprite(100, 500, 'icon', 4); // btn_home
+		// this.add.sprite(100, 600, 'icon', 5); // btn_go_out
+		// this.add.sprite(100, 700, 'icon', 6); // btn_extralife
+		// this.add.sprite(100, 800, 'icon', 8); // btn_start_1
+		// this.add.sprite(252, 800, 'icon', 9); // btn_start_2
+		// this.add.sprite(100, 900, 'icon', 10); // coin_gold
+		// this.add.sprite(252, 900, 'icon', 11); // coin_silver
+
+  	btn_start.setInteractive();
+		btn_character.setInteractive();
+		btn_mute.setInteractive();
+		btn_sound.setInteractive();
+
+  	btn_start.on('pointerup', function(){
+  		game.scene.stop("Menu");
+			game.scene.start("PlayGame");
+  	});
+		btn_character.on('pointerup', function(){
+			game.scene.pause("Menu");
+			game.scene.start("CharacterOption");
+			game.scene.bringToTop("CharacterOption");
+		});
+		btn_mute.on('pointerup', function(){
+			btn_mute.setVisible(false);
+			btn_sound.setVisible(true);
+		});
+		btn_sound.on('pointerup', function(){
+			btn_sound.setVisible(false);
+			btn_mute.setVisible(true);
+		});
+	}
+}
+let life_left;
+
+let block;
+let nowWidth;
+let blockMoving = true;
+let baseLeft;
+let baseRight;
+let nowLeft;
+let nowRight;
+let nowY;
+let cam;
+var scoreText;
+let coin1Text, coin2Text;
+var score = 0;
+let bg_1;
+let bg_2;
+let bg_3;
+let startPos;
+let startVelocity;
+let block_change = false;
+let crossWidth;
+let coin1Score = 0;
+let coin2Score = 0;
+let dropBlockCreated = false;
+let dropPosX, dropPosY, dropWidthX;
+let polygonLeft = true;
+let data1;
+let blockShape;
+let blockShape2 = false;
+let blockShape3 = false;
+let dropBlock;
+let leftOrRight;
+let gameOverMoves = 0;
+let gameOverMoveText;
+
+let velocity = 600;
+
+class PlayGame extends Phaser.Scene {
+	constructor(){
+		super({
+			key: "PlayGame",
+
+			physics : {
+				arcade:{
+					debug : false,
+					gravity : {y:0}
+				},
+				matter :{
+					debug : true,
+					gravity : {y:1}
+				}
+			}
+		});
+
+	}
+	create(){
+
+		blockMoving = true;
+		score = 0;
+		block_change = false;
+		coin1Score = 0;
+		coin2Score = 0;
+		dropBlockCreated = false;
+	  blockShape2 = false;
+		blockShape3 = false;
+		gameOverMoves = 0;
+
+		life_left = 1;
+		cam = this.cameras.main;
+		blockMoving = true;
+		score = 0;
+		console.log("PLAYGAME");
+		this.add.image(config.width/2, config.height/2, 'background_1').setScale(0.5);
+		this.add.image(config.width/2, -config.height/2, 'background_2').setScale(0.5);
+		this.add.image(config.width/2, -config.height/2*3, 'background_3').setScale(0.5);
+		this.add.image(config.width/2, -config.height/2*5, 'background_4').setScale(0.5);
+		bg_1 = this.add.image(config.width/2, -config.height/2*7, 'background_5').setScale(0.5);
+		bg_2 = this.add.image(config.width/2, -config.height/2*9, 'background_5').setScale(0.5);
+		bg_3 = this.add.image(config.width/2, -config.height/2*11, 'background_5').setScale(0.5);
+		// start block
+		this.add.image(config.width/2, config.height-80, 'ground').setScale(0.5);
+
+		this.add.rectangle(config.width/2, config.height/2 - 100, 20, 70, 0xffffff);
+		// game block
+		nowY = config.height-205;
+  	block = this.add.rectangle(220, nowY, 420, 70, 0xf8c806);
+		this.physics.add.existing(block);
+		block.setStrokeStyle(2, 0x000000);
+		block.body.velocity.x = velocity;
+		baseLeft = config.width/2 - 210;
+		baseRight = config.width/2 + 210;
+		nowWidth = 420;
+
+		// 화면 표시 정보
+		this.add.sprite(30, 30, 'icon', 10).setScale(0.7).setScrollFactor(0);
+		coin1Text = this.add.text(30 + 25, 20, ' 0', { fontSize: '30px', fill: '#ffffff'}).setScrollFactor(0);
+		this.add.sprite(180, 30, 'icon', 11).setScale(0.7).setScrollFactor(0);
+		coin2Text = this.add.text(180 + 25, 20, ' 0', { fontSize: '30px', fill: '#ffffff'}).setScrollFactor(0);
+		scoreText = this.add.text(config.width - 30, 20, ' 0', { fontSize: '30px', fill: '#ffffff'}).setScrollFactor(0).setOrigin(1,0);
+
+	}
+	update(){
+		// block 모양 결정
+		if(score < 2){
+			blockShape = 1;
+		}else if(score < 5){
+			blockShape = 1;
+		}else{
+			blockShape = 1;
+		}
+		if(dropBlockCreated === true){
+			dropBlockCreated = false;
+			if(blockShape === 1 ){
+				dropBlock = this.add.rectangle(dropPosX, dropPosY, dropWidthX, 70, 0xf8c806);
+			}else if(blockShape2 === false){
+				blockShape2 = true;
+				dropBlock = this.add.rectangle(dropPosX, dropPosY, dropWidthX, 70, 0xf8c806);
+			}else if(blockShape === 2){
+				if(polygonLeft === false){
+					data1 = [20, 0, dropWidthX+20, 0, dropWidthX, 70, 0, 70];
+				}else{
+					data1 = [0, 0, dropWidthX, 0, dropWidthX+20, 70, 20, 70];
+				}
+				console.log("hi");
+				dropBlock = this.add.polygon(dropPosX, dropPosY, data1, 0xf8c806);
+			}else{ //shape3
+				if(leftOrRight === true){
+					data1 = [10, 0, dropWidthX+10, 0, dropWidthX, 70, 0, 70];
+				}else{
+					data1 = [0, 0, dropWidthX, 0, dropWidthX+10, 70, 10, 70];
+				}
+				dropBlock = this.add.polygon(dropPosX, dropPosY, data1, 0xf8c806);
+			}
+			this.physics.add.existing(dropBlock);
+			dropBlock.body.setGravityY(200);
+			this.tweens.add({
+	        targets: dropBlock,
+	        alpha: 0,
+					duration: 1000,
+	        repeat: 0,
+					ease:"Linear",
+					onComplete: function () {
+						dropBlock.destroy();
+					},
+	    });
+		}
+		if(block_change === true){
+			block_change = false;
+			let newBase = this.add.rectangle((baseLeft+baseRight)/2, nowY+70, 50, 70, 0xf8c806);
+			newBase.setStrokeStyle(2, 0x000000);
+			if(blockShape === 1){
+				block.setScale(50/nowWidth, 1);
+			}else if(blockShape === 2){
+
+			}
+			nowWidth = 50;
+		}
+		if(block.body.x >= config.width - nowWidth){
+			gameOverMoves = gameOverMoves + 1;
+			block.body.velocity.x = -velocity;
+		}
+		if(block.body.x <= 0){
+			gameOverMoves = gameOverMoves + 1;
+			block.body.velocity.x = velocity;
+		}
+		if(gameOverMoves > 5){
+			game.scene.start("GameOver");
+			game.scene.pause("PlayGame");
+			game.scene.bringToTop("GameOver");
+		}
+		this.input.on('pointerdown', function(pointer){
+			if(blockMoving === true){
+				block.body.velocity.x = 0;
+				if(blockShape === 1 || blockShape === 3){
+					console.log("lev3");
+					nowLeft = block.x-(nowWidth/2);
+					nowRight = block.x +(nowWidth/2);
+				}else if(blockShape === 2){
+					if(polygonLeft === true){
+						nowLeft = block.x - (nowWidth/2)- 10;
+						nowRight = block.x + (nowWidth/2) - 10;
+					}else{
+						nowLeft = block.x - (nowWidth/2) + 10;
+						nowRight = block.x + (nowWidth/2) + 10;
+					}
+				}
+				// block 왼쪽에서 멈춤
+				if(nowRight < baseLeft || nowLeft > baseRight){
+					console.log("OUT");
+					crossWidth =0;
+					nowY = nowY + 70;
+					game.scene.start("GameOver");
+					game.scene.pause("PlayGame");
+					game.scene.bringToTop("GameOver");
+				}else if(nowLeft < baseLeft-2){
+					console.log("LEFT");
+					leftOrRight = true;
+					dropBlockCreated = true;
+					dropPosX = (nowLeft + baseLeft)/2;
+					dropPosY = nowY;
+					dropWidthX = baseLeft-nowLeft;
+
+					crossWidth = nowRight-baseLeft;
+					baseRight = nowRight;
+					if(blockShape === 2){
+						if(polygonLeft === true){
+							baseLeft = baseLeft + 20;
+							baseRight = baseRight + 20;
+						}else{
+							baseLeft = baseLeft - 20;
+							baseRight = baseRight - 20;
+						}
+						nowWidth = baseRight-baseLeft;
+					}else if(blockShape === 3){
+						baseLeft = baseLeft + 10;
+						baseRight = baseRight - 10;
+						nowWidth = baseRight- baseLeft;
+						console.log(nowWidth);
+					}
+
+					score = score + 1;
+					if(blockShape === 1){
+						block.setPosition((baseLeft + baseRight)/2, nowY);
+						block.setScale(((baseRight - baseLeft)*block.scaleX)/nowWidth, 1);
+					}else if(blockShape === 2){
+						block.destroy();
+						if(polygonLeft === true){
+							data1 = [20, 0, nowWidth+20, 0, nowWidth, 70, 0, 70];
+							block = this.scene.add.polygon((baseLeft+baseRight)/2 - 10, nowY, data1, 0xf8c806);
+						}else{
+							data1 = [0, 0, nowWidth, 0, nowWidth+20, 70, 20, 70];
+							block = this.scene.add.polygon((baseLeft+baseRight)/2 + 10, nowY, data1, 0xf8c806);
+						}
+						this.scene.physics.add.existing(block);
+						block.body.moves = false;
+						block.setStrokeStyle(2, 0x000000);
+					}else{ // startBlockShape3
+						block.destroy();
+						data1 = [10, 0, nowWidth+10, 0, nowWidth+20, 70, 0, 70];
+						block = this.scene.add.polygon((baseLeft+baseRight)/2,  nowY, data1, 0xf8c806);
+						this.scene.physics.add.existing(block);
+						block.body.moves = false;
+						block.setStrokeStyle(2, 0x000000);
+					}
+				}else if(nowRight > baseRight+2){
+					console.log("RIGHT");
+					leftOrRight = false;
+					dropBlockCreated = true;
+					dropPosX = (nowRight+baseRight)/2;
+					dropPosY = nowY;
+					dropWidthX = nowRight - baseRight;
+
+					crossWidth = baseRight - nowLeft;
+					baseLeft = nowLeft;
+
+					if(blockShape === 2){
+						if(polygonLeft === true){
+							baseLeft = baseLeft + 20;
+							baseRight = baseRight + 20;
+						}else{
+							baseLeft = baseLeft - 20;
+							baseRight = baseRight - 20;
+						}
+						nowWidth = baseRight-baseLeft;
+					}else if(blockShape === 3){
+						baseLeft = baseLeft + 10;
+						baseRight = baseRight - 10;
+						nowWidth = baseRight- baseLeft;
+					}
+
+					score = score + 1;
+					if(blockShape === 1){
+						block.setPosition((baseLeft + baseRight)/2, nowY);
+						block.setScale(((baseRight - baseLeft)*block.scaleX)/nowWidth, 1);
+					}else if(blockShape === 2){
+						block.destroy();
+						if(polygonLeft === true){
+							data1 = [20, 0, nowWidth+20, 0, nowWidth, 70, 0, 70]
+							block = this.scene.add.polygon((baseLeft+baseRight)/2 - 10, nowY, data1, 0xf8c806);
+						}else{
+							data1 = [0, 0, nowWidth, 0, nowWidth+20, 70, 20, 70]
+							block = this.scene.add.polygon((baseLeft+baseRight)/2 + 10, nowY, data1, 0xf8c806);
+						}
+						this.scene.physics.add.existing(block);
+						block.body.moves = false;
+						block.setStrokeStyle(2, 0x000000);
+					}else{//blockshape === 3
+						block.destroy();
+						data1 = [10, 0, nowWidth+10, 0, nowWidth+20, 70, 0, 70];
+						block = this.scene.add.polygon((baseLeft+baseRight)/2,  nowY, data1, 0xf8c806);
+						this.scene.physics.add.existing(block);
+						block.body.moves = false;
+						block.setStrokeStyle(2, 0x000000);
+					}
+				}else{
+					console.log("Perfect");
+					crossWidth = nowWidth;
+					baseLeft = nowLeft;
+					baseRight = nowRight;
+
+					if(blockShape === 2){
+						if(polygonLeft === true){
+							baseLeft = baseLeft + 20;
+							baseRight = baseRight + 20;
+						}else{
+							baseLeft = baseLeft - 20;
+							baseRight = baseRight - 20;
+						}
+						nowWidth = baseRight-baseLeft;
+					}else if(blockShape === 3){
+						baseLeft = baseLeft + 10;
+						baseRight = baseRight - 10;
+						nowWidth = baseRight- baseLeft;
+					}
+					score = score + 1;
+					coin1Score = coin1Score + 1;
+					coin1Text.setText(coin1Score);
+				}
+				if(crossWidth/nowWidth > 0.9){
+					console.log("GOOD");
+					coin2Score = coin2Score + 1;
+					coin2Text.setText(coin2Score);
+				}
+				nowWidth = baseRight-baseLeft;
+				if(nowWidth < 1){
+					nowY = nowY + 70;
+					game.scene.start("GameOver");
+					game.scene.pause("PlayGame");
+					game.scene.bringToTop("GameOver");
+				}
+				nowY = nowY - 70;
+				blockMoving = false;
+				scoreText.setText(score);
+
+				if(polygonLeft === true){
+					polygonLeft = false;
+				}else{
+					polygonLeft = true;
+				}
+			}
+			// background position change
+			if(bg_3.y < bg_1.y){ // bg_3 is most higher
+				if(cam.scrollY < bg_3.y){
+					bg_1.setY(bg_1.y-3*config.height);
+				}
+			}else if(bg_1.y < bg_2.y){
+				if(cam.scrollY < bg_1.y){
+					bg_2.setY(bg_2.y-3*config.height);
+				}
+			}else if(bg_2.y < bg_3.y){
+				if(cam.scrollY < bg_2.y){
+					bg_3.setY(bg_3.y-3*config.height);
+				}
+			}
+		});
+
+		if(blockMoving=== false){ //block 생성하는 곳
+			gameOverMoves = 0;
+			blockMoving = true;
+
+			if(Phaser.Math.Between(0, 1) === 0){
+				startPos = nowWidth/2;
+				startVelocity = velocity;
+			}else{
+				startPos = config.width - nowWidth/2;
+				startVelocity = -velocity;
+			}
+			if(blockShape === 1){
+				block = this.add.rectangle(startPos, nowY, nowWidth, 70, 0xf8c806);
+				this.physics.add.existing(block);
+				block.body.velocity.x = startVelocity;
+				block.setStrokeStyle(2, 0x000000);
+			}else if(blockShape === 2){
+				if(polygonLeft === true){
+					data1 = [20, 0, nowWidth+20, 0, nowWidth, 70, 0, 70]
+					block = this.add.polygon(startPos, nowY, data1, 0xf8c806);
+					this.physics.add.existing(block);
+					block.body.velocity.x = startVelocity;
+					block.setStrokeStyle(2, 0x000000);
+				}else{
+					data1 = [0, 0, nowWidth, 0, nowWidth+20, 70, 20, 70]
+					block = this.add.polygon(startPos, nowY, data1, 0xf8c806);
+					this.physics.add.existing(block);
+					block.body.velocity.x = startVelocity;
+					block.setStrokeStyle(2, 0x000000);
+				}
+			}else{// blocklevel3
+				data1 = [10, 0, nowWidth-10, 0, nowWidth, 70, 0, 70]
+				block = this.add.polygon(startPos, nowY, data1, 0xf8c806);
+				this.physics.add.existing(block);
+				block.body.velocity.x = startVelocity;
+				block.setStrokeStyle(2, 0x000000);
+			}
+			// camera scroll up
+			if(score > 5){
+				cam.scrollY = cam.scrollY-70;
+			}
+		}
+
+
+	}
+
+}
+
+class GameOver extends Phaser.Scene {
+	constructor(){
+		super('GameOver');
+	}
+	create(){
+		console.log("GAMEOVER");
+		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0.5)');
+		let btn_go_home = this.add.image(config.width * 0.5, config.height * 0.9, 'icon', 4).setScale(0.7);
+		btn_go_home.setInteractive();
+		btn_go_home.on('pointerup', function(){
+			game.scene.start("Menu");
+			game.scene.bringToTop("Menu");
+			game.scene.stop("GameOver");
+			game.scene.stop("PlayGame");
+		});
+		if(life_left >= 1){
+			life_left = life_left -1;
+			let btn_life_plus = this.add.image(config.width/2, config.height/2, 'icon', 6);
+			btn_life_plus.setInteractive();
+			btn_life_plus.on("pointerup", function(){
+
+			blockMoving = true;
+			gameOverMoves = 0;
+
+
+			if(Phaser.Math.Between(0, 1) === 0){
+				startPos = nowWidth/2;
+				startVelocity = velocity;
+			}else{
+				startPos = config.width - nowWidth/2;
+				startVelocity = -velocity;
+			}
+
+			block.body.velocity.x = startVelocity;
+
+			if(nowWidth < 50){
+				if(baseLeft < nowWidth/2 - 25){
+					baseRight = baseLeft + 50;
+				}
+				else if(baseRight > nowWidth/2 + 25){
+					baseLeft = baseRight - 50;
+				}
+				block_change = true;
+			}
+			game.scene.resume("PlayGame");
+			game.scene.stop("GameOver");
+			game.scene.bringToTop("PlayGame");
+			})
+		}
+	}
+}
+
+class Result extends Phaser.Scene {
+	constructor(){
+		super('Result');
+	}
+}
+
+class CharacterOption extends Phaser.Scene {
+	constructor(){
+		super('CharacterOption');
+	}
+	create(){
+		console.log("CHARACTER OPTION");
+		let background_rect = this.add.rectangle(config.width/2, config.height/2, config.width, config.height, 0x000000, 0.3);
+		let card_character  = this.add.sprite(config.width/2, config.height/2, 'card_character').setScale(0.9);
+
+		background_rect.setInteractive();
+		background_rect.on('pointerup', function() {
+			game.scene.resume('Menu');
+			game.scene.stop('CharacterOption');
+		});
+
+		this.color_filter = 0x333333;
+
+		this.char00 = this.add.image(config.width / 2 - 100, config.height / 2 - 100 , 'block').setTint(this.color_filter);
+		this.char01 = this.add.image(config.width / 2 + 100, config.height / 2 - 100 , 'start_block2').setTint(this.color_filter);
+		this.char02 = this.add.image(config.width / 2 - 100, config.height / 2 + 100 , 'start_block3').setTint(this.color_filter);
+		this.char03 = this.add.image(config.width / 2 + 100, config.height / 2 + 100 , 'start_block2').setTint(this.color_filter);
+		this.char00.scaleX = 0.8;
+		this.char01.scaleX = 0.4;
+		this.char02.scaleX = 0.4;
+		this.char03.scaleX = 0.4;
+
+
+
+		this.char00.setInteractive();
+		this.char01.setInteractive();
+		this.char02.setInteractive();
+		this.char03.setInteractive();
+
+		this.char00.on("pointerup", function(){
+			console.log("click char00");
+			game_character = "char00";
+		});
+		this.char01.on("pointerup", function(){
+			console.log("click char01");
+			game_character = "char01";
+		});
+		this.char02.on("pointerup", function(){
+			game_character = "char02";
+		});
+		this.char03.on("pointerup", function(){
+			game_character = "char03";
+		});
+	}
+	update(){
+		switch (game_character) { // 지금 선택된 개릭터 필터제거
+			case "char01":
+				this.char00.setTint(this.color_filter);
+				this.char01.clearTint();
+				this.char02.setTint(this.color_filter);
+				this.char03.setTint(this.color_filter);
+				break;
+			case "char02":
+				this.char00.setTint(this.color_filter);
+				this.char01.setTint(this.color_filter);
+				this.char02.clearTint();
+				this.char03.setTint(this.color_filter);
+				break;
+			case "char03":
+				this.char00.setTint(this.color_filter);
+				this.char01.setTint(this.color_filter);
+				this.char02.setTint(this.color_filter);
+				this.char03.clearTint();
+				break;
+			default: //"char00"
+				this.char00.clearTint();
+				this.char01.setTint(this.color_filter);
+				this.char02.setTint(this.color_filter);
+				this.char03.setTint(this.color_filter);
+		}
+	}
+}
+
+
+let config = {
+	type: Phaser.AUTO, //WEBGL
+	width: 540,
+	height: 960,
+	scale: {
+		// mode: Phaser.Scale.WIDTH_CONTROLS_HEIGHT,
+		// mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_BOTH,
+		parent: 'load_game_div',// div의 id값
+		width: 540,
+		height: 960
+	},
+	// backgroundColor: 0x0c88c7,
+	audio: {
+		disableWebAudio: true
+	},
+	physics: {
+		default : 'arcade',
+		debug : false
+	},
+	scene: [Controller, Menu, PlayGame, GameOver, Result, CharacterOption]
+
+};
+
+let game = new Phaser.Game(config);
+
+
+</script>
+
+</body>
+</html>

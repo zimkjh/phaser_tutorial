@@ -22,9 +22,13 @@ def part3():
 	return render_template('part3.html')
 
 @app.route('/tower_stacking')
-def part10():
+def tower_stacking():
 	return render_template('tower_stacking.html')
+
+@app.route('/block_stacking')
+def block_stacking():
+	return render_template('block_stacking.html')
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = False)
