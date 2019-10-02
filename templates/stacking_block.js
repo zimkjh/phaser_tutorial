@@ -16,12 +16,13 @@ class Controller extends Phaser.Scene{
 
 		this.load.spritesheet('icon', "/games/"+game_title+'/images/icon.png', { frameWidth: 152, frameHeight: 152});
 		this.load.spritesheet('icon2', "/games/"+game_title+'/images/icon.png', { frameWidth: 304, frameHeight: 152});
+		this.load.spritesheet('character_sprites', "/games/"+game_title+'/images/theme.png', { frameWidth: 152, frameHeight: 152});
 
 		this.load.image("block", "/games/"+game_title+"/images/tile_long.png");
 		this.load.image("btn_go_out", "/games/"+game_title+"/images/btn_go_out.png");
 		this.load.image("btn_home", "/games/"+game_title+"/images/btn_home.png");
 		this.load.image("btn_start", "/games/"+game_title+"/images/btn_start.png");
-		this.load.image("card_character", "/games/"+game_title+"/images/card_character.png");
+		this.load.image("card_character", "/games/"+game_title+"/images/card.png");
 		this.load.image("btn_character", "/games/"+game_title+"/images/btn_character.png");
 		this.load.image("square", "/games/"+game_title+"/images/square.png");
 		this.load.image("btn_extralife", "/games/"+game_title+"/images/btn_extralife.png");
@@ -736,73 +737,194 @@ class CharacterOption extends Phaser.Scene {
 		super('CharacterOption');
 	}
 	create(){
+		let thisScene = this;
+		let menuScene = this.scene.get('Menu');
+
 		let background_rect = this.add.rectangle(config.width/2, config.height/2, config.width, config.height, 0x000000, 0.3);
-		let card_character  = this.add.sprite(config.width/2, config.height/2, 'card_character').setScale(0.9);
+		let card_character  = this.add.sprite(config.width/2, config.height/2, 'card_character').setScale(2);
 
 		background_rect.setInteractive();
 		background_rect.on('pointerup', function() {
 			game.scene.resume('Menu');
 			game.scene.stop('CharacterOption');
 		});
+		card_character.setInteractive();
+
+		this.my_coin_sprite = this.add.sprite(config.width / 2 - 40, card_character.y - card_character.height/2 - 50, 'icon', 10).setScale(0.7);
+		this.coin_1_text = this.add.text(this.my_coin_sprite.x + 40, this.my_coin_sprite.y, event_user['coin_1'], { fontSize: '40px', fill: '#ffffff', fontStyle: 'bold'}).setOrigin(0,0.5);
 
 		this.color_filter = 0x333333;
 
-		this.char00 = this.add.image(config.width / 2 - 100, config.height / 2 - 100 , 'block').setTint(this.color_filter);
-		this.char01 = this.add.image(config.width / 2 + 100, config.height / 2 - 100 , 'start_block2').setTint(this.color_filter);
-		this.char02 = this.add.image(config.width / 2 - 100, config.height / 2 + 100 , 'start_block3').setTint(this.color_filter);
-		this.char03 = this.add.image(config.width / 2 + 100, config.height / 2 + 100 , 'start_block2').setTint(this.color_filter);
-		this.char00.scaleX = 0.8;
-		this.char01.scaleX = 0.4;
-		this.char02.scaleX = 0.4;
-		this.char03.scaleX = 0.4;
-
-
-
+		this.char00 = this.add.sprite(config.width / 2 - 100, config.height / 2 - 100 , 'character_sprites', 0).setTint(this.color_filter);
+		this.char01 = this.add.sprite(config.width / 2 + 100, config.height / 2 - 100 , 'character_sprites', 1).setTint(this.color_filter);
+		this.char02 = this.add.sprite(config.width / 2 - 100, config.height / 2 + 100 , 'character_sprites', 2).setTint(this.color_filter);
+		this.char03 = this.add.sprite(config.width / 2 + 100, config.height / 2 + 100 , 'character_sprites', 3).setTint(this.color_filter);
 		this.char00.setInteractive();
 		this.char01.setInteractive();
 		this.char02.setInteractive();
 		this.char03.setInteractive();
 
-		this.char00.on("pointerup", function(){
-			game_character = "char00";
-		});
-		this.char01.on("pointerup", function(){
-			game_character = "char01";
-		});
-		this.char02.on("pointerup", function(){
-			game_character = "char02";
-		});
-		this.char03.on("pointerup", function(){
-			game_character = "char03";
-		});
-	}
-	update(){
 		switch (game_character) { // 지금 선택된 개릭터 필터제거
 			case "char01":
-				this.char00.setTint(this.color_filter);
 				this.char01.clearTint();
-				this.char02.setTint(this.color_filter);
-				this.char03.setTint(this.color_filter);
 				break;
 			case "char02":
-				this.char00.setTint(this.color_filter);
-				this.char01.setTint(this.color_filter);
 				this.char02.clearTint();
-				this.char03.setTint(this.color_filter);
 				break;
 			case "char03":
-				this.char00.setTint(this.color_filter);
-				this.char01.setTint(this.color_filter);
-				this.char02.setTint(this.color_filter);
 				this.char03.clearTint();
 				break;
 			default: //"char00"
 				this.char00.clearTint();
-				this.char01.setTint(this.color_filter);
-				this.char02.setTint(this.color_filter);
-				this.char03.setTint(this.color_filter);
 		}
-	}
+
+		this.char01_cost = 20;
+		this.char02_cost = 30;
+		this.char03_cost = 40;
+		if (!event_user['characters'].split(',').includes("char01")) {
+			this.char01_cost_img = this.add.sprite(this.char01.x - 20, this.char01.y + 100, 'coin_gold').setScale(0.5)
+			this.char01_cost_text = this.add.text(this.char01.x, this.char01.y + 100, '' + this.char01_cost, { fontSize: '25px', fill: '#000000'}).setOrigin(0,0.5);
+		}
+		if (!event_user['characters'].split(',').includes("char02")) {
+			this.char02_cost_img = this.add.sprite(this.char02.x - 20, this.char02.y + 100, 'coin_gold').setScale(0.5)
+			this.char02_cost_text = this.add.text(this.char02.x, this.char02.y + 100, '' + this.char02_cost, { fontSize: '25px', fill: '#000000'}).setOrigin(0,0.5);
+		}
+		if (!event_user['characters'].split(',').includes("char03")) {
+			this.char03_cost_img = this.add.sprite(this.char03.x - 20, this.char03.y + 100, 'coin_gold').setScale(0.5)
+			this.char03_cost_text = this.add.text(this.char03.x, this.char03.y + 100, '' + this.char03_cost, { fontSize: '25px', fill: '#000000'}).setOrigin(0,0.5);
+		}
+
+
+		      // 이미 가진 것이면 현재 캐릭터만 바꾸고, 구매 안한 것이면 결제 후 캐릭터 바꾼다.
+		      this.char00.on('pointerup', function () {
+		        // console.log('char00_cliked');
+		        this.scene.change_current_character(this, "char00");
+		      });
+		      this.char01.on('pointerup', function () {
+		        // console.log('char01_cliked');
+		        if (event_user['characters'].split(',').includes("char01")) {
+		          // 이미 구매했을 때
+		          this.scene.change_current_character(this, "char01");
+		        } else {
+		          // 구매 안 했을 때
+		          if (event_user['coin_1'] >= this.scene.char01_cost) {
+		            // 살 수 있을 때, 서버에 쿼리 날리고 결과ok이면 event_user값 재설정 & 캐릭터 바꾸기
+		            $.ajax({
+		              url: '/event_users/' + event_user['id'],
+		              type: 'PATCH',
+		              dataType: 'text',
+		              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+		              data: {event_user: {characters: "char01", coin_1: -thisScene.char01_cost}},
+		              success: function(result) {
+		                // console.log('record_update_succeed');
+		                // 1변수 리셋
+		                var reuslt_json = JSON.parse(result);
+		                event_user['characters'] = reuslt_json['characters'];
+		                event_user['coin_1'] = reuslt_json['coin_1'];
+		                menuScene.reset_datas();
+		                thisScene.coin_1_text.setText(event_user['coin_1']);
+		                // 2캐릭터 변경
+		                thisScene.change_current_character(thisScene.char01, "char01");
+		                thisScene.char01_cost_img.setVisible(false);
+		                thisScene.char01_cost_text.setVisible(false);
+		              },
+		              error: function(error) {
+		                toastBottom("구매 실패(인터넷 연결을 확인해주세요)");
+		              }
+		            });
+		          } else {
+		            toastBottom("금화가 부족합니다");
+		          }
+		        }
+		      });
+		      this.char02.on('pointerup', function () {
+		        // console.log('char02_cliked');
+		        if (event_user['characters'].split(',').includes("char02")) {
+		          // 이미 구매했을 때
+		          this.scene.change_current_character(this, "char02");
+		        } else {
+		          // 구매 안 했을 때
+		          if (event_user['coin_1'] >= this.scene.char02_cost) {
+		            // 살 수 있을 때, 서버에 쿼리 날리고 결과ok이면 event_user값 재설정 & 캐릭터 바꾸기
+		            $.ajax({
+		              url: '/event_users/' + event_user['id'],
+		              type: 'PATCH',
+		              dataType: 'text',
+		              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+		              data: {event_user: {characters: "char02", coin_1: -thisScene.char02_cost}},
+		              success: function(result) {
+		                // console.log('record_update_succeed');
+		                // 1변수 리셋
+		                var reuslt_json = JSON.parse(result);
+		                event_user['characters'] = reuslt_json['characters'];
+		                event_user['coin_1'] = reuslt_json['coin_1'];
+		                menuScene.reset_datas();
+		                thisScene.coin_1_text.setText(event_user['coin_1']);
+		                // 2캐릭터 변경
+		                thisScene.change_current_character(thisScene.char02, "char02");
+		                thisScene.char02_cost_img.setVisible(false);
+		                thisScene.char02_cost_text.setVisible(false);
+		              },
+		              error: function(error) {
+		                toastBottom("구매 실패(인터넷 연결을 확인해주세요)");
+		              }
+		            });
+		          } else {
+		            toastBottom("금화가 부족합니다");
+		          }
+		        }
+		      });
+		      this.char03.on('pointerup', function () {
+		        // console.log('char03_cliked');
+		        if (event_user['characters'].split(',').includes("char03")) {
+		          // 이미 구매했을 때
+		          this.scene.change_current_character(this, "char03");
+		        } else {
+		          // 구매 안 했을 때
+		          if (event_user['coin_1'] >= this.scene.char03_cost) {
+		            // 살 수 있을 때, 서버에 쿼리 날리고 결과ok이면 event_user값 재설정 & 캐릭터 바꾸기
+		            $.ajax({
+		              url: '/event_users/' + event_user['id'],
+		              type: 'PATCH',
+		              dataType: 'text',
+		              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+		              data: {event_user: {characters: "char03", coin_1: -thisScene.char03_cost}},
+		              success: function(result) {
+		                // console.log('record_update_succeed');
+		                // 1변수 리셋
+		                var reuslt_json = JSON.parse(result);
+		                event_user['characters'] = reuslt_json['characters'];
+		                event_user['coin_1'] = reuslt_json['coin_1'];
+		                menuScene.reset_datas();
+		                thisScene.coin_1_text.setText(event_user['coin_1']);
+		                // 2캐릭터 변경
+		                thisScene.change_current_character(thisScene.char03, "char03");
+		                thisScene.char03_cost_img.setVisible(false);
+		                thisScene.char03_cost_text.setVisible(false);
+		              },
+		              error: function(error) {
+		                toastBottom("구매 실패(인터넷 연결을 확인해주세요)");
+		              }
+		            });
+		          } else {
+		            toastBottom("금화가 부족합니다");
+		          }
+		        }
+		      });
+
+		    }
+
+
+		    change_current_character(new_character_object, new_character_name) {
+		      this.char00.setTint(this.color_filter);
+		      this.char01.setTint(this.color_filter);
+		      this.char02.setTint(this.color_filter);
+		      this.char03.setTint(this.color_filter);
+
+		      new_character_object.clearTint();
+		      game_character = new_character_name;
+		    }
+
 }
 
 
