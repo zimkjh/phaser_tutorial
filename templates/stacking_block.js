@@ -1,3 +1,5 @@
+let game_character = event_user['characters'].split(',')[0];;
+
 class Controller extends Phaser.Scene{
 	constructor(){
 		super('Controller');
@@ -39,7 +41,6 @@ class Controller extends Phaser.Scene{
 	}
 }
 
-let game_character = 'char00';
 class Menu extends Phaser.Scene {
 	constructor (){
 		super ('Menu');
@@ -57,17 +58,22 @@ class Menu extends Phaser.Scene {
 		let btn_character = this.add.image(config.width/2, config.height * 0.9, 'icon', 3).setScale(0.7);
 		let btn_trophy = this.add.image(config.width * 0.8, config.height * 0.9, 'icon', 2).setScale(0.7);
 
-    this.text_highest_score = this.add.text(config.width/2 - 120, config.height * 0.6 + 100, "내 최고 점수: " + "0" + " 점", { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
+    this.text_highest_score = this.add.text(config.width/2 - 120, config.height * 0.6 + 100, "내 최고 점수: " + event_user['score_record'] + " 점", { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
     this.add.image(config.width/2 - 90, config.height * 0.6 + 150, 'icon', 10).setScale(0.5);//.setSize(10, 10);
     this.add.image(config.width/2 + 20, config.height * 0.6 + 150, 'icon', 11).setScale(0.5);
-    this.text_coin_1 = this.add.text(config.width/2 - 60, config.height * 0.6 + 140, 0, { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
-    this.text_coin_2 = this.add.text(config.width/2 + 50, config.height * 0.6 + 140, 0, { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
+    this.text_coin_1 = this.add.text(config.width/2 - 60, config.height * 0.6 + 140, event_user['coin_1'], { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
+    this.text_coin_2 = this.add.text(config.width/2 + 50, config.height * 0.6 + 140, event_user['coin_2'], { fontSize: '25px', fill: '#ffffff', fontStyle: 'bold'});
 
+		btn_go_out.setInteractive();
   	btn_start.setInteractive();
 		btn_character.setInteractive();
 		btn_mute.setInteractive();
 		btn_sound.setInteractive();
+		btn_trophy.setInteractive();
 
+		btn_go_out.on('pointerup', function(){
+			app.views.main.router.back('/events/'+event_user['event_id']);
+		});
   	btn_start.on('pointerup', function(){
   		game.scene.stop("Menu");
 			game.scene.start("PlayGame");
@@ -85,6 +91,15 @@ class Menu extends Phaser.Scene {
 			btn_sound.setVisible(false);
 			btn_mute.setVisible(true);
 		});
+		btn_trophy.on('pointerup', function() {
+			game.scene.pause("Menu");
+			game.scene.start("Result");
+		});
+	}
+	reset_datas(){
+		this.text_highest_score.setText("내 최고 점수: " + event_user['score_record'] + " 점");
+		this.text_coin_1.setText(event_user['coin_1']);
+		this.text_coin_2.setText(event_user['coin_2']);
 	}
 }
 let life_left;
@@ -593,6 +608,25 @@ class GameOver extends Phaser.Scene {
 			game.scene.stop("PlayGame");
 		});
 		if(life_left >= 1){
+			$.ajax({
+			 url: '/event_user_records',
+			 type: 'POST',
+			 beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+			 data: {event_user_record: {event_user_id: event_user['id'], start_score_01: score}},
+			 success: function(result) {
+					 // Do something with the result
+					 // console.log('record_create_succeed');
+					 // console.log('result : ' + result);
+					 // console.log('result : ' + result['id']);
+					 // console.log('result : ' + result['start_time_01']);
+					 gameScene.event_user_record_instant_id = parseInt(result['id']);
+			 },
+				error: function(error) {
+					// console.log('record_create_error');
+					toastBottom("플레이가 기록되지 않습니다(인터넷 연결을 확인해주세요)");
+				}
+			});
+
 			life_left = life_left -1;
 			let btn_life_plus = this.add.image(config.width/2, config.height/2, 'icon', 6);
 			btn_life_plus.setInteractive();
@@ -628,13 +662,73 @@ class GameOver extends Phaser.Scene {
 			game.scene.bringToTop("PlayGame");
 			})
 		}
+
+		else{
+			$.ajax({
+				url: '/event_user_records/' + gameScene.event_user_record_instant_id,
+				type: 'PATCH',
+				dataType: 'text',
+				beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+				data: {event_user_record: {event_user_id: event_user['id'], start_score_02: score}},
+				success: function(result) {
+					// console.log('record_update_succeed');
+				},
+				 error: function(error) {
+					 toastBottom("플레이가 기록되지 않습니다(인터넷 연결을 확인해주세요)");
+				 }
+			});
+		}
+
+      $.ajax({
+        url: '/event_users/' + event_user['id'],
+        type: 'PATCH',
+        dataType: 'text',
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        data: {event_user: {score_record: score, coin_1: coin1Score, coin_2:coin2Score}},
+        success: function(result) {
+          // console.log('record_update_succeed');
+          var reuslt_json = JSON.parse(result);
+          event_user['score_record'] = reuslt_json['score_record'];
+          event_user['coin_1'] = reuslt_json['coin_1'];
+          event_user['coin_2'] = reuslt_json['coin_2'];
+
+          menuScene.reset_datas();
+        },
+        error: function(error) {
+          toastBottom("플레이가 기록되지 않습니다(인터넷 연결을 확인해주세요)");
+        }
+      });
+
 	}
 }
 
 class Result extends Phaser.Scene {
-	constructor(){
-		super('Result');
-	}
+
+    constructor ()
+    {
+        super('Result');
+    }
+
+    create ()
+    {
+      let background_rect = this.add.rectangle(config.width/2, config.height/2, config.width, config.height, 0x000000, 0.3);
+
+
+      $.ajax({
+        url: '/events/get_scoreboard.js',
+        type: 'POST',
+        dataType: 'script',
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        data: {id: event_user['event_id']},
+        success: function(result) {
+          // console.log("불러오기 성공");
+        },
+        error: function(error) {
+          toastBottom("순위표를 불러올 수 없습니다(인터넷 연결을 확인해주세요)");
+        }
+      });
+    }
+
 }
 
 class CharacterOption extends Phaser.Scene {
