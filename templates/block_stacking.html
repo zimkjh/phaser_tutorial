@@ -672,7 +672,7 @@ class CharacterOption extends Phaser.Scene {
 		});
 		card_character.setInteractive();
 
-		this.my_coin_sprite = this.add.sprite(config.width / 2 - 40, card_character.y - card_character.height/2 - 50, 'icon', 10).setScale(0.7);
+		this.my_coin_sprite = this.add.sprite(config.width / 2 - 40, card_character.y - card_character.height - 50, 'icon', 10).setScale(0.7);
 		this.coin_1_text = this.add.text(this.my_coin_sprite.x + 40, this.my_coin_sprite.y, event_user['coin_1'], { fontSize: '40px', fill: '#ffffff', fontStyle: 'bold'}).setOrigin(0,0.5);
 
 		this.color_filter = 0x333333;

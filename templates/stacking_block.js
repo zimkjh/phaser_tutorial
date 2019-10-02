@@ -750,7 +750,7 @@ class CharacterOption extends Phaser.Scene {
 		});
 		card_character.setInteractive();
 
-		this.my_coin_sprite = this.add.sprite(config.width / 2 - 40, card_character.y - card_character.height/2 - 50, 'icon', 10).setScale(0.7);
+		this.my_coin_sprite = this.add.sprite(config.width / 2 - 40, card_character.y - card_character.height - 50, 'icon', 10).setScale(0.7);
 		this.coin_1_text = this.add.text(this.my_coin_sprite.x + 40, this.my_coin_sprite.y, event_user['coin_1'], { fontSize: '40px', fill: '#ffffff', fontStyle: 'bold'}).setOrigin(0,0.5);
 
 		this.color_filter = 0x333333;
@@ -782,15 +782,15 @@ class CharacterOption extends Phaser.Scene {
 		this.char02_cost = 30;
 		this.char03_cost = 40;
 		if (!event_user['characters'].split(',').includes("char01")) {
-			this.char01_cost_img = this.add.sprite(this.char01.x - 20, this.char01.y + 100, 'coin_gold').setScale(0.5)
+			this.char01_cost_img = this.add.sprite(this.char01.x - 20, this.char01.y + 100, 'icon',10).setScale(0.5)
 			this.char01_cost_text = this.add.text(this.char01.x, this.char01.y + 100, '' + this.char01_cost, { fontSize: '25px', fill: '#000000'}).setOrigin(0,0.5);
 		}
 		if (!event_user['characters'].split(',').includes("char02")) {
-			this.char02_cost_img = this.add.sprite(this.char02.x - 20, this.char02.y + 100, 'coin_gold').setScale(0.5)
+			this.char02_cost_img = this.add.sprite(this.char02.x - 20, this.char02.y + 100, 'icon', 10).setScale(0.5)
 			this.char02_cost_text = this.add.text(this.char02.x, this.char02.y + 100, '' + this.char02_cost, { fontSize: '25px', fill: '#000000'}).setOrigin(0,0.5);
 		}
 		if (!event_user['characters'].split(',').includes("char03")) {
-			this.char03_cost_img = this.add.sprite(this.char03.x - 20, this.char03.y + 100, 'coin_gold').setScale(0.5)
+			this.char03_cost_img = this.add.sprite(this.char03.x - 20, this.char03.y + 100, 'icon', 10).setScale(0.5)
 			this.char03_cost_text = this.add.text(this.char03.x, this.char03.y + 100, '' + this.char03_cost, { fontSize: '25px', fill: '#000000'}).setOrigin(0,0.5);
 		}
 
