@@ -158,8 +158,12 @@ const gameLevelDesign = [
 	[["parallel"], [500],["end"]],
 ]
 
-const colors = ["0xfc3f47", "0xf7c549","0x418c95","0x1a2433","0xaf64fe"]
+const colors00 = ["0xf8c806", "0x63f1c3","0xd357de","0x3cdbfe","0xd68b7a"];
+const colors01 = ["0xf0f6ff", "0xd6e6ff","0xbac2ff","0xe1c6ff","0xfdc7d6"];
+const colors02 = ["0xfc3f47", "0xf7c549","0x418c95","0x1a2433","0xaf64fe"];
+const colors03 = ["0x56bab7", "0x3376a5","0x285488","0x102f54","0x607186"];
 
+let colors = colors00;
 
 class PlayGame extends Phaser.Scene {
 	constructor(){
@@ -181,6 +185,15 @@ class PlayGame extends Phaser.Scene {
 	}
 	create(){
 		this.game_level = 0;
+		if(game_character === "char00"){
+			colors = colors00;
+		}else if(game_character === "char01"){
+			colors = colors01;
+		}else if(game_character === "char02"){
+			colors = colors02;
+		}else{
+			colors = colors03;
+		}
 
 		blockMoving = true;
 		score = 0;
