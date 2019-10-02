@@ -179,6 +179,10 @@ class PlayGame extends Phaser.Scene {
 
 	}
 	create(){
+
+		let gameScene = this;
+		let menuScene = this.scene.get('Menu');
+
 		this.game_level = 0;
 
 		blockMoving = true;
@@ -599,6 +603,10 @@ class GameOver extends Phaser.Scene {
 		super('GameOver');
 	}
 	create(){
+		let gameScene = this.scene.get('PlayGame');
+		let menuScene = this.scene.get('Menu');
+		let thisScene = this;
+
 		this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 0.5)');
 		let btn_go_home = this.add.image(config.width * 0.5, config.height * 0.9, 'icon', 4).setScale(0.7);
 		btn_go_home.setInteractive();
@@ -673,8 +681,6 @@ class GameOver extends Phaser.Scene {
 				data: {event_user_record: {event_user_id: event_user['id'], start_score_02: score}},
 				success: function(result) {
 					// console.log('record_update_succeed');
-					// I added
-					gameScene.event_user_record_instant_id = parseInt(result['id']);
 
 				},
 				 error: function(error) {
