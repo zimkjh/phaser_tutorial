@@ -673,6 +673,9 @@ class GameOver extends Phaser.Scene {
 				data: {event_user_record: {event_user_id: event_user['id'], start_score_02: score}},
 				success: function(result) {
 					// console.log('record_update_succeed');
+					// I added
+					gameScene.event_user_record_instant_id = parseInt(result['id']);
+
 				},
 				 error: function(error) {
 					 toastBottom("플레이가 기록되지 않습니다(인터넷 연결을 확인해주세요)");
@@ -748,7 +751,6 @@ class CharacterOption extends Phaser.Scene {
 			game.scene.resume('Menu');
 			game.scene.stop('CharacterOption');
 		});
-		card_character.setInteractive();
 
 		this.my_coin_sprite = this.add.sprite(config.width / 2 - 40, card_character.y - card_character.height - 50, 'icon', 10).setScale(0.7);
 		this.coin_1_text = this.add.text(this.my_coin_sprite.x + 40, this.my_coin_sprite.y, event_user['coin_1'], { fontSize: '40px', fill: '#ffffff', fontStyle: 'bold'}).setOrigin(0,0.5);
