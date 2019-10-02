@@ -26,13 +26,6 @@ class Controller extends Phaser.Scene{
 		this.load.image("btn_character", "/games/"+game_title+"/images/btn_character.png");
 		this.load.image("square", "/games/"+game_title+"/images/square.png");
 		this.load.image("btn_extralife", "/games/"+game_title+"/images/btn_extralife.png");
-		this.load.image("start_block2", "/games/"+game_title+"/images/startBlock2.png");
-		this.load.image("start_block3", "/games/"+game_title+"/images/startBlock3.png");
-		this.load.atlas('sheet', "/games/"+game_title+"/images/startBlock2.png", "static/assets/images/startBlock2.json");
-		this.load.atlas('sheet3', "/games/"+game_title+"/images/startBlock3.png", "static/assets/images/startBlock3.json");
-
-		this.load.json("start_block_shape", "/games/"+game_title+"/images/startBlockShape.json");
-		this.load.json("start_block_shape3", "/games/"+game_title+"/images/startBlockShape3.json");
 
 
 	}
@@ -136,7 +129,7 @@ let blockShape2 = false;
 let blockShape3 = false;
 let dropBlock;
 let leftOrRight;
-let gameOverMoves = 5;
+let gameOverMoves = 20;
 let gameOverMoveText;
 
 let velocity = 300;
@@ -147,14 +140,20 @@ let parallelAngle = 40;
 
 const gameLevelDesign = [
 	// #1
-	[["default"], [300],["end"]],
-	[["default"], [350],["end"]],
-	[["default"], [400],["end"]],
-	[["default"], [450],["end"]],
-	[["default"], [500],["end"]],
+	[["default"], [150],["end"], [20]],
+	[["default"], [200],["end"], [20]],
+	[["default"], [250],["end"], [20]],
+	[["default"], [300],["end"], [20]],
 
 	// #2
-	[["parallel"], [500],["end"]],
+	[["ladder"], [300],["end"], [20]],
+
+	// #3
+	[["parallel"], [200],["end"], [15]],
+	[["parallel"], [250],["end"], [15]],
+	[["parallel"], [250],["rand"], [15]],
+	[["parallel"], [300],["rand"], [15]],
+
 ]
 
 const colors00 = ["0xf8c806", "0x63f1c3","0xd357de","0x3cdbfe","0xd68b7a"];
@@ -206,7 +205,7 @@ class PlayGame extends Phaser.Scene {
 		dropBlockCreated = false;
 	  blockShape2 = false;
 		blockShape3 = false;
-		gameOverMoves = 5;
+		gameOverMoves = 20;
 		life_left = 1;
 		velocity = 300;
 		blockCreatePos = "end";
@@ -239,7 +238,7 @@ class PlayGame extends Phaser.Scene {
 		coin2Text = this.add.text(180 + 25, 20, ' 0', { fontSize: '30px', fill: '#ffffff'}).setScrollFactor(0);
 		scoreText = this.add.text(config.width - 30, 20, ' 0', { fontSize: '30px', fill: '#ffffff'}).setScrollFactor(0).setOrigin(1,0);
 
-		gameOverMoveText = this.add.text(150, 100, '남은 Move 수 : 5', { fontSize: '30px', fill: '#ffffff', fontStyle: 'bold'}).setScrollFactor(0);
+		gameOverMoveText = this.add.text(150, 100, '남은 Move 수 : '+gameOverMoves, { fontSize: '30px', fill: '#ffffff', fontStyle: 'bold'}).setScrollFactor(0);
 
 
 	}
@@ -549,7 +548,7 @@ class PlayGame extends Phaser.Scene {
 
 		if(blockMoving=== false){ //block 생성하는 곳
 
-			gameOverMoves = 5;
+			gameOverMoves = gameLevelDesign[this.game_level][3][0];
 			gameOverMoveText.setText("남은 Move 수 : "+gameOverMoves);
 			blockMoving = true;
 
@@ -570,17 +569,21 @@ class PlayGame extends Phaser.Scene {
 			}
 
 			// level design. 잘하는 사람들 방지
-			if(score === 25){
-				if(nowWidth <= 20){
+			if(score === 20){
+				if(nowWidth <= 110){
 					nowWidth = nowWidth;
-				}else if(nowWidth <= 50){
-					nowWidth = 20;
-				}else if(nowWidth <= 100){
-					nowWidth = 50;
-				}else if(nowWidth <= 150){
-					nowWidth = 100;
+				}else if(nowWidth <= 120){
+					nowWidth = 110;
+				}else if(nowWidth <= 140){
+					nowWidth = 115;
+				}else if(nowWidth <= 160){
+					nowWidth = 120;
+				}else if(nowWidth <= 180){
+					nowWidth = 125;
+				}else if(nowWidth <= 200){
+					nowWidth = 130;
 				}else{
-					nowWidth = 150;
+					nowWidth = 135;
 				}
 			}
 
@@ -655,7 +658,7 @@ class GameOver extends Phaser.Scene {
 			btn_life_plus.on("pointerup", function(){
 
 			blockMoving = true;
-			gameOverMoves = 5;
+			gameOverMoves = gameLevelDesign[gameScene.game_level][3][0];
 			colorNum = (colorNum + 4)% 5;
 			gameOverMoveText.setText("남은 Move 수 : "+gameOverMoves);
 
